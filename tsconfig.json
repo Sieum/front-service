@@ -3,22 +3,22 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@apis/*": [
+      "~apis/*": [
         "src/apis/*"
       ],
-      "@components/*": [
+      "~components/*": [
         "src/components/*"
       ],
-      "@nav/*": [
-        "src/routes/*"
+      "~nav/*": [
+        "src/nav/*"
       ],
-      "@screens/*": [
+      "~screens/*": [
         "src/screens/*"
       ],
-      "@icons/*": [
+      "~icons/*": [
         "src/static/icons/*"
       ],
-      "@images/*": [
+      "~images/*": [
         "src/static/images/*"
       ]
     }

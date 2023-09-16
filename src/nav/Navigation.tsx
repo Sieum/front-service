@@ -1,12 +1,12 @@
-import React from "react";
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import React from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import NavigationTabBar from '~nav/NavigationTabBar';
 import Stack from '~nav/Stack';
 
 const Nav = createNativeStackNavigator();
 
 const Navigation = () => {
-    return(
+    return (
         <Nav.Navigator
             screenOptions={{
                 presentation:'modal',

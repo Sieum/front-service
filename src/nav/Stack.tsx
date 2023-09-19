@@ -1,6 +1,6 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import OAuthCallbackHandler from '~components/OAuthCallbackHandler';
+import OAuthCallbackHandler from '../container/OAuthCallbackHandler';
 
 const NativeStack = createNativeStackNavigator();
 

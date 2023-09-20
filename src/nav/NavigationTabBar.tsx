@@ -1,11 +1,11 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FriendList from '../presentation/FriendList/FriendList';
-import Community from '../presentation/Community/Community';
-import Home from '../presentation/Home/Home';
-import PlayList from '../presentation/PlayList/PlayList';
-import MyProfile from '../presentation/Profile/MyProfile';
+import FriendList from '../presentation/friendList/FriendList';
+import Community from '../presentation/community/Community';
+import Home from '../presentation/home/Home';
+import PlayList from '../presentation/playList/PlayList';
+import MyProfile from '../presentation/profile/MyProfile';
 
 const Tab = createBottomTabNavigator();
 

@@ -9,7 +9,7 @@ function App() {
     screens: {
       Stack: {
         screens: {
-          OAuthCallbackHandler: 'oauth/callback/:accessToken/:refreshToken',
+          OAuthCallbackHandler: 'oauth/callback',
         },
       },
       NavigationTabBar: {

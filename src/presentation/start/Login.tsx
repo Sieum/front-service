@@ -3,7 +3,7 @@ import {Dimensions, StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const Login = onPress => {
+const Login = ({onPress}: any) => {
   return (
     <LinearGradient
       start={{x: 1, y: 1}}

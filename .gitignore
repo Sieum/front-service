@@ -28,6 +28,7 @@ build/
 .idea
 .gradle
 .gitmessage.txt
+.env
 local.properties
 *.iml
 *.hprof

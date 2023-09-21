@@ -7,16 +7,7 @@ import React from 'react';
 function App() {
   const config: {screens: PathConfigMap<object>} = {
     screens: {
-      Stack: {
-        screens: {
-          OAuthCallbackHandler: 'oauth/callback',
-        },
-      },
-      NavigationTabBar: {
-        screens: {
-          Home: 'home',
-        },
-      },
+      OAuthCallbackHandler: 'oauth/callback',
     },
   };
   const linking = {

@@ -1,12 +1,10 @@
-import React from "react";
-import { View, Text} from "react-native";
+import React from 'react';
+import MyProfileContainer from 'src/container/profile/MyProfileContainer';
 
-const Home = () => {
-    return(
-        <View>
-            <Text>MyProfile</Text>
-        </View>
-    )
-}
+const MyProfile = () => {
+  const buttonText = '프로필 수정'; // 동적으로 변경할 텍스트
 
-export default Home;
+  return <MyProfileContainer buttonText={buttonText} />;
+};
+
+export default MyProfile;

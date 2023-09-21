@@ -5,7 +5,9 @@ module.exports = {
     'prettier/prettier': 0, //prettier 에 대한 경고 끄기
     'for-direction': 2, // for 루프가 무한대로 실행되는 것을 방지
     'no-undef': 2,
-    'no-console': 2,
+    'no-console': process.env.NOVE_DEV === 'production' ? 2 : 0,
+    'no-debugger': process.env.NOVE_DEV === 'production' ? 2 : 0,
+    'eol-last': 0,
     'no-empty': 2,
     'no-dupe-args': 2,
     'no-dupe-keys': 2,
@@ -21,5 +23,6 @@ module.exports = {
     'react/no-render-return-value': 2,
     'react/no-unknown-property': 2,
     'react/require-render-return': 2, //render method를 작성할때 return 이 없으면 경고
-    'quotes': ['off', 'single'],
-}};
+    quotes: ['off', 'single'],
+  },
+};

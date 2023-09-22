@@ -32,11 +32,11 @@ const postData: PostItem[] = [
     postImage: require('src/static/images/cover.png'),
     caption: '게시글 내용 2',
   },
-  // 다른 게시글 데이터 추가
 ];
 
 const CommunityContainer: React.FC = () => {
   const renderPostItem = ({item}: {item: PostItem}) => (
+    // 게시글
     <View style={styles.postContainer}>
       <View style={styles.userProfileContainer}>
         <Image source={item.userProfileImage} style={styles.userProfileImage} />
@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
   },
   postImage: {
     width: '100%',
-    height: 300, // 이미지 높이 조절
-    resizeMode: 'cover', // 이미지를 화면에 꽉 채우도록 설정
+    height: 300,
+    resizeMode: 'cover',
     marginBottom: 8,
   },
   caption: {

@@ -11,55 +11,55 @@ interface MyProfileContainerProps {
 const postItems = [
   {
     id: 1,
-    imageSource: require('src/static/images/profileimage.png'),
+    imageSource: require('src/static/images/cover.png'),
   },
   {
     id: 2,
-    imageSource: require('src/static/images/profileimage.png'),
+    imageSource: require('src/static/images/cover.png'),
   },
   {
     id: 3,
-    imageSource: require('src/static/images/profileimage.png'),
+    imageSource: require('src/static/images/cover.png'),
   },
   {
     id: 4,
-    imageSource: require('src/static/images/profileimage.png'),
+    imageSource: require('src/static/images/cover.png'),
   },
   {
     id: 5,
-    imageSource: require('src/static/images/profileimage.png'),
+    imageSource: require('src/static/images/cover.png'),
   },
   {
     id: 6,
-    imageSource: require('src/static/images/profileimage.png'),
+    imageSource: require('src/static/images/cover.png'),
   },
   {
     id: 7,
-    imageSource: require('src/static/images/profileimage.png'),
+    imageSource: require('src/static/images/cover.png'),
   },
   {
     id: 8,
-    imageSource: require('src/static/images/profileimage.png'),
+    imageSource: require('src/static/images/cover.png'),
   },
   {
     id: 9,
-    imageSource: require('src/static/images/profileimage.png'),
+    imageSource: require('src/static/images/cover.png'),
   },
   {
     id: 10,
-    imageSource: require('src/static/images/profileimage.png'),
+    imageSource: require('src/static/images/cover.png'),
   },
   {
     id: 11,
-    imageSource: require('src/static/images/profileimage.png'),
+    imageSource: require('src/static/images/cover.png'),
   },
   {
     id: 12,
-    imageSource: require('src/static/images/profileimage.png'),
+    imageSource: require('src/static/images/cover.png'),
   },
   {
     id: 13,
-    imageSource: require('src/static/images/profileimage.png'),
+    imageSource: require('src/static/images/cover.png'),
   },
 
   // 추가 게시물 아이템을 원하는 만큼 추가
@@ -91,7 +91,7 @@ const MyProfileContainer: React.FC<MyProfileContainerProps> = ({
         <Button
           mode="contained"
           onPress={() => handleButtonPress(buttonText)}
-          color="#FCD34D"
+          buttonColor="#FCD34D"
           style={styles.button}>
           {buttonText}
         </Button>

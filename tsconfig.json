@@ -12,8 +12,14 @@
       "~nav/*": [
         "src/nav/*"
       ],
-      "~screens/*": [
-        "src/screens/*"
+      "~container/*": [
+        "src/container/*"
+      ],
+      "~presentation/*": [
+        "src/presentation/*"
+      ],
+      "~recoil/*": [
+        "src/recoil/*"
       ],
       "~icons/*": [
         "src/static/icons/*"

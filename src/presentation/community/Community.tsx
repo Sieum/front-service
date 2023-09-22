@@ -1,12 +1,9 @@
-import React from "react";
-import { View, Text} from "react-native";
+import React from 'react';
+// import {View} from 'react-native';
+import CommunityContainer from 'src/container/community/CommunityContainer';
 
-const Home = () => {
-    return(
-        <View>
-            <Text>Community</Text>
-        </View>
-    )
-}
+const Community = () => {
+  return <CommunityContainer />;
+};
 
-export default Home;
+export default Community;

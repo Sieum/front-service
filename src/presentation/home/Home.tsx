@@ -1,14 +1,6 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, ScrollView, FlatList, Image} from 'react-native';
-import {
-  Text,
-  Card,
-  IconButton,
-  Portal,
-  Dialog,
-  Button,
-  Modal,
-} from 'react-native-paper';
+import {Text, Card, IconButton, Portal, Dialog} from 'react-native-paper';
 import GoogleMap from './GoogleMap';
 
 const styles = StyleSheet.create({
@@ -73,29 +65,6 @@ const styles = StyleSheet.create({
   },
   artist: {
     marginLeft: 15,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 투명 배경 설정
-  },
-  modalContent: {
-    backgroundColor: 'yellow', // 투명
-    padding: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    zIndex: 1,
-  },
-  transparentImage: {
-    width: 100,
-    height: 100,
-    opacity: 1.0, // 이미지의 투명도 조절
-    position: 'absolute',
-    bottom: 30,
-    zIndex: 10,
   },
 });
 
@@ -184,36 +153,9 @@ const MusicTab = () => {
 };
 
 const MapTab = () => {
-  const [visible, setVisible] = React.useState(false);
-
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
-  // const containerStyle = {backgroundColor: 'yellow', padding: 20, margin: 20};
-
   return (
     <View>
       <GoogleMap />
-      <Portal>
-        <Modal visible={visible} onDismiss={hideModal}>
-          <View style={styles.modalContainer}>
-            <Image
-              source={require('~images/hand.png')}
-              style={[styles.logo, styles.transparentImage]}
-            />
-            <View style={styles.modalContent}>
-              <Text>여기에 각종 정보 들어갈 예정</Text>
-              <Text>여기에 각종 정보 들어갈 예정</Text>
-              <Text>여기에 각종 정보 들어갈 예정</Text>
-              <Text>여기에 각종 정보 들어갈 예정</Text>
-              <Text>여기에 각종 정보 들어갈 예정</Text>
-              <Text>여기에 각종 정보 들어갈 예정</Text>
-            </View>
-          </View>
-        </Modal>
-      </Portal>
-      <Button style={{marginTop: 30}} onPress={showModal}>
-        모달 테스트 버튼
-      </Button>
     </View>
   );
 };

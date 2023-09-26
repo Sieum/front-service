@@ -1,12 +1,35 @@
-import React, {useRef, useState} from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import React, {useRef, useState, useEffect} from 'react';
+import {
+  View,
+  StyleSheet,
+  Image,
+  Platform,
+  PermissionsAndroid,
+} from 'react-native';
 import {Text, Portal, Button, Modal} from 'react-native-paper';
-import MapView, {Marker, Region} from 'react-native-maps';
+import MapView, {Marker, Region, PROVIDER_GOOGLE} from 'react-native-maps';
+import Geolocation from 'react-native-geolocation-service';
+
+async function requestPermission() {
+  try {
+    // 안드로이드 위치 정보 수집 권한 요청
+    if (Platform.OS === 'android') {
+      return await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 const GoogleMap: React.FC = () => {
   // MapView에 대한 참조, 현재 지도 영역을 저장하는 상태 변수
   const mapRef = useRef<MapView | null>(null);
   const [currentRegion, setCurrentRegion] = useState<Region | null>(null);
+
+  // 현재 위치 정보에 대한 상태관리
+  const [location, setLocation] = useState({latitude: 0, longitude: 0});
 
   // 모달창 상태관리
   const [visible, setVisible] = React.useState(false);
@@ -40,15 +63,48 @@ const GoogleMap: React.FC = () => {
     }
   };
 
+  // 현재 위치에 대한 관리
+  useEffect(() => {
+    requestPermission().then(result => {
+      console.log({result});
+      if (result === 'granted') {
+        Geolocation.getCurrentPosition(
+          pos => {
+            const {latitude, longitude} = pos.coords; // 위치 정보에서 위도와 경도 추출
+            setLocation({latitude, longitude}); // 위도와 경도를 포함한 객체를 상태 변수에 저장
+            console.log(latitude);
+            console.log(longitude);
+          },
+          error => {
+            console.log(error);
+          },
+          {
+            enableHighAccuracy: false,
+            timeout: 50000,
+          },
+        );
+      }
+    });
+  }, []);
+
+  if (!location) {
+    return (
+      <View>
+        <Text>Splash Screen</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      {/*  MapView에 대한 참조를 연결합니다. */}
+      {/*  MapView에 대한 참조를 연결합니다.
+      멀캠 좌표 (37.5013, 127.0397) */}
       <MapView
         ref={mapRef}
         style={styles.map}
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: 37.5013,
+          longitude: 127.0397,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
@@ -57,8 +113,8 @@ const GoogleMap: React.FC = () => {
         {/* 지도 상에 마커 추가 클릭했을 때 showModal함수로 모달창 띄우기*/}
         <Marker
           coordinate={{
-            latitude: 37.78825,
-            longitude: -122.4324,
+            latitude: 37.5013,
+            longitude: 127.0397,
           }}
           title="모달 테스트"
           description="클릭하면 상세 모달창 뜸"

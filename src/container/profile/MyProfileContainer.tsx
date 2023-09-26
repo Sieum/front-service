@@ -1,34 +1,13 @@
 import React from 'react';
 import {View, StyleSheet, ScrollView, FlatList, TouchableOpacity, Dimensions} from 'react-native';
-import {Card, Button, Divider, Appbar, IconButton, Text} from 'react-native-paper';
+import {Card, Chip, Divider, IconButton, Text} from 'react-native-paper';
+import TextTicker from 'react-native-text-ticker';
+import Topbar from '~components/Topbar';
 import UserProfile from '~components/UserProfile';
 
 interface MyProfileContainerProps {
   buttonText: string;
 }
-
-const Topbar = ({title}) => {
-  const topbarStyle = StyleSheet.create({
-      topbar: {
-          alignItems: "center",
-          textAlign: 'center',
-      },
-      title: {
-          flex: 1,
-          alignItems: "center",
-          textAlign: 'center',
-      },
-  });
-
-  return (
-      <>
-          <Appbar.Header style={topbarStyle.topbar}>
-              <Appbar.Content title={title} style={topbarStyle.title}/>
-          </Appbar.Header>
-          <Divider />
-      </>
-  );
-};
 
 // 가상의 게시물 데이터 배열
 const postItems = [
@@ -88,16 +67,30 @@ const postItems = [
   // 추가 게시물 아이템을 원하는 만큼 추가
 ];
 
+const favoriteGenre = [
+  {
+    genre: "acuostic",
+  },
+  {
+    genre: "death metal",
+  },
+  {
+    genre: "hard rock",
+  },
+  {
+    genre: "k-pop",
+  },
+  {
+    genre: "j-pop",
+  },
+];
+
 const MyProfileContainer: React.FC<MyProfileContainerProps> = ({
-  buttonText,
 }) => {
-  const handleButtonPress = (buttonName: string) => {
-    console.log(`${buttonName} 버튼이 클릭되었습니다.`);
-  };
 
   return (
-    <ScrollView>
-      <Topbar title={"마이프로필"}/>
+    <ScrollView style={styles.mainBg}>
+      <Topbar title={"마이프로필"} />
 
       <UserProfile
         profileimage={require('src/static/images/profileimage.png')}
@@ -106,11 +99,46 @@ const MyProfileContainer: React.FC<MyProfileContainerProps> = ({
         playlistNum={4}
       />
 
+      <FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.chipBox}
+        data={favoriteGenre}
+        renderItem={({item}) => (
+          <View style={styles.chipContainer}>
+            <Chip style={styles.chip} textStyle={{color: "white"}}>{item.genre}</Chip>
+          </View>
+        )}
+      />
+
+      <View style={styles.profileMusic}>
+        <Card.Cover
+          source={require('src/static/images/cover.png')}
+          style={styles.cardCover}
+        />
+
+        <View style={styles.textBox}>
+          <TextTicker
+            duration={5000}
+            loop
+            bounce
+            repeatSpacer={50}
+            marqueeDelay={400}
+          >
+            <Text variant="bodyLarge">최대한 길게 작성해보겠습니다 어떻게 될까요 ?</Text>
+          </TextTicker>
+          {/* <Text variant="bodyLarge">민들레(Single ver.)</Text> */}
+          <Text variant="bodyMedium">우효</Text>
+        </View>
+
+
+      </View>
+
       <View>
         <IconButton
           style={styles.gridIcon}
           icon="grid"
-          iconColor="yellow"
+          iconColor="#FCD34D"
           size={30}
           onPress={() => {
           }}
@@ -123,7 +151,7 @@ const MyProfileContainer: React.FC<MyProfileContainerProps> = ({
           renderItem={({item}) => (
             <TouchableOpacity>
               <Card elevation={0}>
-                <Card.Cover 
+                <Card.Cover
                   source={item.imageSource}
                   style={styles.postCard}
                 />
@@ -141,6 +169,9 @@ const { width } = Dimensions.get('window');
 const cardSize = width / 3;
 
 const styles = StyleSheet.create({
+  mainBg: {
+    backgroundColor: "white",
+  },
   gridIcon: {
     alignSelf: "center",
   },
@@ -158,36 +189,33 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     elevation: 0,
   },
-  /////////////////////////
-  // container: {
-  //   flex: 1,
-  // },
-  // buttonContainer: {
-  //   alignItems: 'center',
-  //   marginTop: 10,
-  // },
-  // button: {
-  //   borderRadius: 5,
-  //   marginTop: 10,
-  // },
-  // postListContainer: {
-  //   alignItems: 'center',
-  // },
-  // postContainer: {
-  //   flexDirection: 'row',
-  //   flexWrap: 'wrap',
-  //   justifyContent: 'flex-start',
-  //   alignItems: 'flex-start',
-  // },
-  // postCard: {
-  //   width: '30%',
-  //   height: 100,
-  //   marginRight: 10,
-  //   marginBottom: 10,
-  // },
-  // postImage: {
-  //   height: '100%',
-  // },
+  chipBox: {
+    flexDirection: "row",
+    margin: 5,
+  },
+  chipContainer: {
+    margin: 5,
+  },
+  chip: {
+    alignContent: "space-between",
+    backgroundColor: "#FCD34D",
+    alignSelf: "center",
+  },
+  profileMusic: {
+    overflow: "hidden",
+    width: width / 2,
+    alignSelf: "center",
+    flexDirection: "row",
+  },
+  cardCover: {
+    width: 50,
+    height: 50,
+  },
+  textBox: {
+    marginLeft: 10,
+    marginRight: 15,
+    alignSelf: "center",
+  },
 });
 
 export default MyProfileContainer;

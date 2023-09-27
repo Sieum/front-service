@@ -2,8 +2,18 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Divider, Appbar} from 'react-native-paper';
 
-const BackTopbar = ({title}: any) => {
+interface BackTopBarProps {
+    title: string;
+    iconName?: string;
+}
+
+const BackTopbar: React.FC<BackTopBarProps> = ({
+    title,
+    iconName,
+}) => {
+
     const topbarStyle = StyleSheet.create({
+
         topbar: {
             alignItems: "center",
             textAlign: 'center',
@@ -11,16 +21,22 @@ const BackTopbar = ({title}: any) => {
         title: {
             flex: 1,
             textAlign: "center",
+            alignContent: "center",
         },
     });
 
     return (
         <>
-            <Appbar.Header style={topbarStyle.topbar}>
-                <Appbar.BackAction />
-                <Appbar.Content title={title} style={topbarStyle.title}/>
-            </Appbar.Header>
-            <Divider />
+        <Appbar.Header style={topbarStyle.topbar}>
+            <Appbar.BackAction />
+            <Appbar.Content title={title} style={topbarStyle.title}/>
+            {
+                iconName !== undefined ?
+                <Appbar.Action icon={iconName} onPress={() => {}} />
+                : null
+            }
+        </Appbar.Header>
+        <Divider />
         </>
     );
 };

@@ -95,6 +95,16 @@ const styles = StyleSheet.create({
     zIndex: 10,
     borderRadius: 75,
   },
+  marker: {
+    width: 35,
+    height: 35,
+    resizeMode: 'contain',
+  },
+  cover: {
+    width: 35,
+    height: 35,
+    borderRadius: 20,
+  },
   // 음악 관련 스타일
   mainBg: {
     backgroundColor: 'white',
@@ -107,6 +117,7 @@ const styles = StyleSheet.create({
     height: 20,
     resizeMode: 'contain',
   },
+
   topbar: {
     height: mapHeight * 0.1,
     flex: 1,
@@ -356,6 +367,7 @@ const MapTab = () => {
       멀캠 좌표 (37.5013, 127.0397) 
       처음 지역 원래 location.latitude, location.longitude로 해야 됨..*/}
       <ClusteredMapView
+        clusterColor="#FCD34D"
         ref={mapRef}
         style={styles.map}
         data={markers}
@@ -375,8 +387,16 @@ const MapTab = () => {
               latitude: marker.latitude,
               longitude: marker.longitude,
             }}
-            onPress={showModal}
-          />
+            onPress={showModal}>
+            <Image
+              source={require('~images/profileimage.png')}
+              style={styles.cover}
+            />
+            <Image
+              source={require('~images/yellowMarker.png')}
+              style={styles.marker}
+            />
+          </Marker>
         ))}
         {/* <Marker
           coordinate={{

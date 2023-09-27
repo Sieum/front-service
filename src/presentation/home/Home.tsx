@@ -18,9 +18,9 @@ import {
   FAB,
   Modal,
 } from 'react-native-paper';
-// import GoogleMap from './GoogleMap';
 import MapView, {Marker, Region} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
+import ClusteredMapView from 'react-native-map-clustering';
 
 async function requestPermission() {
   try {
@@ -256,6 +256,20 @@ const MapTab = () => {
     longitude: 127.0397,
   });
 
+  // 마커 더미데이터
+  const markers = [
+    {latitude: 37.5013, longitude: 127.0397},
+    {latitude: 37.5051, longitude: 127.0397},
+    {latitude: 37.5017, longitude: 127.0397},
+    {latitude: 37.5017, longitude: 127.0401},
+    {latitude: 37.505, longitude: 127.0381},
+    {latitude: 37.5013, longitude: 127.0397},
+    {latitude: 37.6612, longitude: 127.2838},
+    {latitude: 37.4928, longitude: 127.0289},
+    {latitude: 37.2039, longitude: 127.0377},
+    {latitude: 37.3838, longitude: 127.1397},
+  ];
+
   // 모달창 상태관리
   const [visible, setVisible] = React.useState(false);
   const showModal = () => setVisible(true);
@@ -341,9 +355,10 @@ const MapTab = () => {
       {/*  MapView에 대한 참조를 연결
       멀캠 좌표 (37.5013, 127.0397) 
       처음 지역 원래 location.latitude, location.longitude로 해야 됨..*/}
-      <MapView
+      <ClusteredMapView
         ref={mapRef}
         style={styles.map}
+        data={markers}
         initialRegion={{
           latitude: 37.5013,
           longitude: 127.0397,
@@ -353,7 +368,17 @@ const MapTab = () => {
         // 지도 영역 변경 시 현재 지도 영역 업데이트
         onRegionChangeComplete={region => setCurrentRegion(region)}>
         {/* 지도 상에 마커 추가 클릭했을 때 showModal함수로 모달창 띄우기*/}
-        <Marker
+        {markers.map((marker, index) => (
+          <Marker
+            key={index}
+            coordinate={{
+              latitude: marker.latitude,
+              longitude: marker.longitude,
+            }}
+            onPress={showModal}
+          />
+        ))}
+        {/* <Marker
           coordinate={{
             latitude: 37.5013,
             longitude: 127.0397,
@@ -361,8 +386,8 @@ const MapTab = () => {
           title="모달 테스트"
           description="클릭하면 상세 모달창 뜸"
           onPress={showModal}
-        />
-      </MapView>
+        /> */}
+      </ClusteredMapView>
       {/* 확대, 축소 버튼 */}
       <View style={styles.buttonContainer}>
         <FAB icon="plus" style={styles.fab} onPress={handleZoomIn} />

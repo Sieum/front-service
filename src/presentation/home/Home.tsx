@@ -75,6 +75,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     zIndex: 1,
+    width: 240,
+    height: 160,
   },
   transparentImage: {
     width: 100,
@@ -83,6 +85,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 30,
     zIndex: 10,
+  },
+  transparentProfile: {
+    width: 100,
+    height: 100,
+    opacity: 1.0, // 이미지의 투명도 조절
+    position: 'absolute',
+    bottom: 85,
+    zIndex: 10,
+    borderRadius: 75,
   },
   // 음악 관련 스타일
   mainBg: {
@@ -277,6 +288,22 @@ const MapTab = () => {
     }
   };
 
+  // 현재 위치로 이동하는 함수
+  const moveToCurrentLocation = () => {
+    if (currentRegion && mapRef.current) {
+      // 현재 위치 정보를 사용하여 지도 영역을 설정
+      // location.latitude, location.longitude로 하고 싶다...
+      const newRegion: Region = {
+        latitude: 37.5013,
+        longitude: 127.0397,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      };
+      // animateToRegion 함수를 사용하여 현재 위치로 지도를 이동합니다.
+      mapRef.current.animateToRegion(newRegion, 500);
+    }
+  };
+
   // 현재 위치에 대한 관리
   useEffect(() => {
     requestPermission().then(result => {
@@ -288,8 +315,6 @@ const MapTab = () => {
             setLocation({latitude: latitude, longitude: longitude}); // 위도와 경도를 포함한 객체를 상태 변수에 저장
             console.log('현재 위도: ' + latitude);
             console.log('현재 경도: ' + longitude);
-            console.log('location 위도: ' + location.latitude);
-            console.log('location 경도: ' + location.longitude);
           },
           error => {
             console.log(error);
@@ -313,14 +338,15 @@ const MapTab = () => {
 
   return (
     <View style={styles.container}>
-      {/*  MapView에 대한 참조를 연결합니다.
-      멀캠 좌표 (37.5013, 127.0397) */}
+      {/*  MapView에 대한 참조를 연결
+      멀캠 좌표 (37.5013, 127.0397) 
+      처음 지역 원래 location.latitude, location.longitude로 해야 됨..*/}
       <MapView
         ref={mapRef}
         style={styles.map}
         initialRegion={{
-          latitude: location.latitude,
-          longitude: location.longitude,
+          latitude: 37.5013,
+          longitude: 127.0397,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
@@ -341,6 +367,11 @@ const MapTab = () => {
       <View style={styles.buttonContainer}>
         <FAB icon="plus" style={styles.fab} onPress={handleZoomIn} />
         <FAB icon="minus" style={styles.fab} onPress={handleZoomOut} />
+        <FAB
+          icon="crosshairs-gps"
+          style={styles.fab}
+          onPress={moveToCurrentLocation}
+        />
       </View>
 
       {/* 모달창 정보 */}
@@ -348,6 +379,10 @@ const MapTab = () => {
         <Portal>
           <Modal visible={visible} onDismiss={hideModal}>
             <View style={styles.modalContainer}>
+              <Image
+                source={require('~images/profileimage.png')}
+                style={[styles.logo, styles.transparentProfile]}
+              />
               <Image
                 source={require('~images/hand.png')}
                 style={[styles.logo, styles.transparentImage]}

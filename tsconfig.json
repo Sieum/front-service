@@ -4,12 +4,30 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "paths": {
-      "~apis/*": ["src/apis/*"],
-      "~components/*": ["src/components/*"],
-      "~nav/*": ["src/nav/*"],
-      "~screens/*": ["src/screens/*"],
-      "~icons/*": ["src/static/icons/*"],
-      "~images/*": ["src/static/images/*"]
+      "~apis/*": [
+        "src/apis/*"
+      ],
+      "~components/*": [
+        "src/components/*"
+      ],
+      "~nav/*": [
+        "src/nav/*"
+      ],
+      "~container/*": [
+        "src/container/*"
+      ],
+      "~presentation/*": [
+        "src/presentation/*"
+      ],
+      "~recoil/*": [
+        "src/recoil/*"
+      ],
+      "~icons/*": [
+        "src/static/icons/*"
+      ],
+      "~images/*": [
+        "src/static/images/*"
+      ]
     }
   }
 }

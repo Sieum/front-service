@@ -474,6 +474,7 @@ const Home = () => {
       </Portal>
     </ScrollView>
   );
+
 };
 
 export default Home;

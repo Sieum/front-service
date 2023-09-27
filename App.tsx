@@ -3,6 +3,7 @@ import Navigation from '~nav/Navigation';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Linking, StatusBar} from 'react-native';
 import React from 'react';
+import { PaperProvider } from "react-native-paper";
 
 function App() {
   const config: {screens: PathConfigMap<object>} = {
@@ -23,12 +24,14 @@ function App() {
     },
   };
   return (
-    <SafeAreaProvider>
-      <StatusBar hidden={true} />
-      <NavigationContainer linking={linking}>
-        <Navigation />
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <PaperProvider>
+      <SafeAreaProvider>
+        <StatusBar hidden={true} />
+        <NavigationContainer linking={linking}>
+          <Navigation />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </PaperProvider>
   );
 }
 

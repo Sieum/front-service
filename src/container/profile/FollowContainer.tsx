@@ -1,12 +1,7 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { Text, Button, } from 'react-native-paper';
+import BackTopbar from '~components/BackTopBar';
 
 const followersData = [
   {
@@ -17,7 +12,7 @@ const followersData = [
   },
   {
     id: '2',
-    username: 'follower2',
+    username: 'follower2ssssssss',
     isFollowing: true,
     image: require('src/static/images/profileimage.png'),
   },
@@ -132,7 +127,8 @@ const FollowContainer: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.mainBg}>
+      <BackTopbar title="닉네임 들어감"/>
       <View style={styles.tabButtons}>
         <TouchableOpacity
           style={[styles.tabButton, isFollowersTab && styles.activeTabButton]}
@@ -140,7 +136,7 @@ const FollowContainer: React.FC = () => {
             setIsFollowersTab(true);
             setData(followersData);
           }}>
-          <Text style={styles.tabButtonText}>팔로워</Text>
+          <Text variant="titleMedium">팔로워</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.tabButton, !isFollowersTab && styles.activeTabButton]}
@@ -148,7 +144,7 @@ const FollowContainer: React.FC = () => {
             setIsFollowersTab(false);
             setData(followingData);
           }}>
-          <Text style={styles.tabButtonText}>팔로잉</Text>
+          <Text variant="titleMedium">팔로잉</Text>
         </TouchableOpacity>
       </View>
       <FlatList
@@ -156,15 +152,21 @@ const FollowContainer: React.FC = () => {
         keyExtractor={item => item.id}
         renderItem={({item}) => (
           <View style={styles.userItem}>
-            <Image source={item.image} style={styles.userImage} />
-            <Text>{item.username}</Text>
-            <TouchableOpacity
-              onPress={() => toggleFollowStatus(item.id)}
-              style={styles.followButton}>
-              <Text style={styles.followButtonText}>
-                {item.isFollowing ? '언팔로우' : '팔로우'}
-              </Text>
-            </TouchableOpacity>
+            <View>
+              <Image source={item.image} style={styles.userImage} />
+            </View>
+            <View>
+              <Text variant="bodyLarge">{item.username}</Text>
+            </View>
+            <View>
+              <Button
+                onPress={() => toggleFollowStatus(item.id)}
+                style={styles.followButton}>
+                <Text variant="bodyMedium">
+                  {item.isFollowing ? '언팔로우' : '팔로우'}
+                </Text>
+              </Button>
+            </View>
           </View>
         )}
       />
@@ -173,9 +175,8 @@ const FollowContainer: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
+  mainBg: {
+    backgroundColor: "white",
   },
   tabButtons: {
     flexDirection: 'row',
@@ -190,31 +191,24 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   activeTabButton: {
-    borderBottomColor: 'blue',
-  },
-  tabButtonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    borderBottomColor: '#FCD34D',
   },
   userItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginHorizontal: 10,
+    marginVertical: 5,
   },
   userImage: {
-    width: 40,
-    height: 40,
+    width: 60,
+    height: 60,
     borderRadius: 20,
     marginRight: 10,
   },
   followButton: {
-    padding: 8,
+    width: 100,
     backgroundColor: '#FCD34D',
-    borderRadius: 4,
-  },
-  followButtonText: {
-    color: 'white',
   },
 });
 

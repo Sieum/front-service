@@ -12,55 +12,55 @@ interface MyProfileContainerProps {
 // 가상의 게시물 데이터 배열
 const postItems = [
   {
-    id: 1,
+    id: '1',
     imageSource: require('src/static/images/cover.png'),
   },
   {
-    id: 2,
+    id: '2',
     imageSource: require('src/static/images/cover2.png'),
   },
   {
-    id: 3,
+    id: '3',
     imageSource: require('src/static/images/cover.png'),
   },
   {
-    id: 4,
+    id: '4',
     imageSource: require('src/static/images/cover2.png'),
   },
   {
-    id: 5,
+    id: '5',
     imageSource: require('src/static/images/cover.png'),
   },
   {
-    id: 6,
+    id: '6',
     imageSource: require('src/static/images/cover2.png'),
   },
   {
-    id: 7,
+    id: '7',
     imageSource: require('src/static/images/cover.png'),
   },
   {
-    id: 8,
+    id: '8',
     imageSource: require('src/static/images/cover2.png'),
   },
   {
-    id: 9,
+    id: '9',
     imageSource: require('src/static/images/cover.png'),
   },
   {
-    id: 10,
+    id: '10',
     imageSource: require('src/static/images/cover2.png'),
   },
   {
-    id: 11,
+    id: '11',
     imageSource: require('src/static/images/cover.png'),
   },
   {
-    id: 12,
+    id: '12',
     imageSource: require('src/static/images/cover2.png'),
   },
   {
-    id: 13,
+    id: '13',
     imageSource: require('src/static/images/cover.png'),
   },
 
@@ -127,11 +127,8 @@ const MyProfileContainer: React.FC<MyProfileContainerProps> = ({
           >
             <Text variant="bodyLarge">최대한 길게 작성해보겠습니다 어떻게 될까요 ?</Text>
           </TextTicker>
-          {/* <Text variant="bodyLarge">민들레(Single ver.)</Text> */}
           <Text variant="bodyMedium">우효</Text>
         </View>
-
-
       </View>
 
       <View>
@@ -146,8 +143,8 @@ const MyProfileContainer: React.FC<MyProfileContainerProps> = ({
         <Divider style={styles.bordDivider}/>
         <FlatList
           style={styles.postContainer}
-          keyExtractor={item => item.id}
           data={postItems}
+          keyExtractor={item => item.id}
           renderItem={({item}) => (
             <TouchableOpacity>
               <Card elevation={0}>

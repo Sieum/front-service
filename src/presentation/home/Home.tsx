@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   map: {
     // flex:1로 바꾸면 터짐
     width: mapWidth,
-    height: mapHeight * 0.9,
+    height: mapHeight * 0.82,
   },
   buttonContainer: {
     flexDirection: 'column',
@@ -474,7 +474,6 @@ const Home = () => {
       </Portal>
     </ScrollView>
   );
-
 };
 
 export default Home;

@@ -6303,8 +6303,6 @@ react-native-linear-gradient@^2.8.3:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz#9a116649f86d74747304ee13db325e20b21e564f"
   integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
 
-<<<<<<< HEAD
-=======
 react-native-map-clustering@^3.4.2:
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/react-native-map-clustering/-/react-native-map-clustering-3.4.2.tgz#9ecdd489bfd7f22fc558f48c2b7a3e8a1807933f"
@@ -6320,7 +6318,6 @@ react-native-maps@^1.7.1:
   dependencies:
     "@types/geojson" "^7946.0.10"
 
->>>>>>> 5bc3376cf7cb505c2de77c321404c4b33f7252e7
 react-native-paper@^5.10.6:
   version "5.10.6"
   resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.10.6.tgz#922f25bd258140f3b7600c9b67674593e90ea19e"

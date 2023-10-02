@@ -36,7 +36,7 @@ const ListBox = ({category}) => {
         { title: '플리제목5' , total: 10, heart: 151 },
         { title: '플리제목6' , total: 10, heart: 151 },
 
-    ]
+    ];
 
     const ListBoxStyle = StyleSheet.create({
         listBox: {
@@ -70,7 +70,7 @@ const ListBox = ({category}) => {
 
     return (
         <View style={ListBoxStyle.listBox}>
-            <Text variant="titleMedium" 
+            <Text variant="titleMedium"
                 style={ListBoxStyle.category}>
                     {category}
             </Text>

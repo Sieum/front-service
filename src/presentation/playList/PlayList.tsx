@@ -84,14 +84,14 @@ const ListBox = ({category}) => {
                     <View>
                         <Text variant="titleMedium" style={ListBoxStyle.listText}>{item.title}</Text>
                         <Text variant="titleSmall" style={ListBoxStyle.listText}>
-                            총 {item.total}곡 | {<Icon name="heart" size={15} color="yellow" />}{item.heart}개
+                            총 {item.total}곡 | {<Icon name="heart" size={15} color="#FCD34D" />}{item.heart}개
                         </Text>
                     </View>
                     <View style={ListBoxStyle.likeBtn}>
                         {like ? // 좋아요 여부에 따라 하트색 변경 -> 나의 플레이스트라면 좋아요 해제 하는 순간 화면에서 사라지게 하면 될듯
                             <IconButton
                             icon="cards-heart"
-                            iconColor="yellow"
+                            iconColor="#FCD34D"
                             size={30}
                             onPress={() => {
                                 setLike(false); // TODO : 개별적으로 만들어서 연결
@@ -99,7 +99,7 @@ const ListBox = ({category}) => {
                             /> :
                             <IconButton
                             icon="cards-heart-outline"
-                            iconColor="yellow"
+                            iconColor="#FCD34D"
                             size={30}
                             onPress={() => {
                                 setLike(true);

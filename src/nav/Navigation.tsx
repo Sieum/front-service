@@ -4,7 +4,7 @@ import NavigationTabBar from '~nav/NavigationTabBar';
 import Stack from '~nav/Stack';
 
 import RNSecureStorage from 'rn-secure-storage';
-import OAuthCallbackHandler from '../container/OAuthCallbackHandler';
+import OAuthCallbackHandler from '../components/OAuthCallbackHandler';
 import LoginWebView from '../presentation/start/LoginWebView';
 import LoginContainer from '../container/login/LoginContainer';
 import {useRecoilState} from 'recoil';

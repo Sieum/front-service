@@ -28,141 +28,6 @@ import {useRecoilValue} from 'recoil';
 const mapWidth = Dimensions.get('window').width;
 let mapHeight = Dimensions.get('window').height;
 
-const styles = StyleSheet.create({
-  // 지도 관련 스타일
-  container: {
-    flex: 1,
-  },
-  map: {
-    // flex:1로 바꾸면 터짐
-    // flex: 1,
-    width: mapWidth,
-    height: mapHeight,
-  },
-  buttonContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-    position: 'absolute',
-    bottom: 16,
-    left: 16,
-    right: 16,
-  },
-  fab: {
-    margin: 3,
-    backgroundColor: '#FCD34D',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 투명 배경 설정
-  },
-  modalContent: {
-    backgroundColor: 'yellow', // 투명
-    padding: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    zIndex: 1,
-    width: 240,
-    height: 160,
-  },
-  transparentImage: {
-    width: 100,
-    height: 100,
-    opacity: 1.0, // 이미지의 투명도 조절
-    position: 'absolute',
-    bottom: 30,
-    zIndex: 10,
-  },
-  transparentProfile: {
-    width: 100,
-    height: 100,
-    opacity: 1.0, // 이미지의 투명도 조절
-    position: 'absolute',
-    bottom: 85,
-    zIndex: 10,
-    borderRadius: 75,
-  },
-  marker: {
-    width: 35,
-    height: 35,
-    resizeMode: 'contain',
-  },
-  cover: {
-    width: 35,
-    height: 35,
-    borderRadius: 20,
-  },
-  // 음악 관련 스타일
-  mainBg: {
-    backgroundColor: 'white',
-  },
-  centeredText: {
-    textAlign: 'center',
-  },
-  logo: {
-    width: 50,
-    height: 20,
-    resizeMode: 'contain',
-  },
-
-  topbar: {
-    height: mapHeight * 0.1,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginVertical: 5,
-    // paddingHorizontal: 20, // 양쪽 여백 임시
-  },
-  tb_left: {
-    flex: 1,
-    alignItems: 'flex-start',
-    paddingLeft: 10,
-  },
-  tb_center: {
-    flex: 2,
-    alignItems: 'center',
-  },
-  tb_right: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  address: {
-    fontWeight: 'bold',
-  },
-  textShadow: {
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: {width: 2, height: 2},
-    textShadowRadius: 10,
-  },
-  card: {
-    width: 100,
-    margin: 10,
-  },
-  musicCard: {
-    height: 100,
-    width: 100,
-  },
-  listTitle: {
-    margin: 10,
-    fontWeight: 'bold',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: {width: 2, height: 2},
-    textShadowRadius: 10,
-  },
-  musicTitle: {
-    marginLeft: 15,
-    fontWeight: 'bold',
-  },
-  artist: {
-    marginLeft: 15,
-  },
-});
-
 const HorizontalFlatList = () => {
   const data = [
     {key: '1', title: '노래1', artist: '가수이름'},
@@ -461,5 +326,140 @@ const Home = () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  // 지도 관련 스타일
+  container: {
+    flex: 1,
+  },
+  map: {
+    // flex:1로 바꾸면 터짐
+    // flex: 1,
+    width: mapWidth,
+    height: mapHeight,
+  },
+  buttonContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
+    right: 16,
+  },
+  fab: {
+    margin: 3,
+    backgroundColor: '#FCD34D',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 투명 배경 설정
+  },
+  modalContent: {
+    backgroundColor: 'yellow', // 투명
+    padding: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    zIndex: 1,
+    width: 240,
+    height: 160,
+  },
+  transparentImage: {
+    width: 100,
+    height: 100,
+    opacity: 1.0, // 이미지의 투명도 조절
+    position: 'absolute',
+    bottom: 30,
+    zIndex: 10,
+  },
+  transparentProfile: {
+    width: 100,
+    height: 100,
+    opacity: 1.0, // 이미지의 투명도 조절
+    position: 'absolute',
+    bottom: 85,
+    zIndex: 10,
+    borderRadius: 75,
+  },
+  marker: {
+    width: 35,
+    height: 35,
+    resizeMode: 'contain',
+  },
+  cover: {
+    width: 35,
+    height: 35,
+    borderRadius: 20,
+  },
+  // 음악 관련 스타일
+  mainBg: {
+    backgroundColor: 'white',
+  },
+  centeredText: {
+    textAlign: 'center',
+  },
+  logo: {
+    width: 50,
+    height: 20,
+    resizeMode: 'contain',
+  },
+
+  topbar: {
+    height: mapHeight * 0.1,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginVertical: 5,
+    // paddingHorizontal: 20, // 양쪽 여백 임시
+  },
+  tb_left: {
+    flex: 1,
+    alignItems: 'flex-start',
+    paddingLeft: 10,
+  },
+  tb_center: {
+    flex: 2,
+    alignItems: 'center',
+  },
+  tb_right: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  address: {
+    fontWeight: 'bold',
+  },
+  textShadow: {
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 10,
+  },
+  card: {
+    width: 100,
+    margin: 10,
+  },
+  musicCard: {
+    height: 100,
+    width: 100,
+  },
+  listTitle: {
+    margin: 10,
+    fontWeight: 'bold',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 10,
+  },
+  musicTitle: {
+    marginLeft: 15,
+    fontWeight: 'bold',
+  },
+  artist: {
+    marginLeft: 15,
+  },
+});
 
 export default Home;

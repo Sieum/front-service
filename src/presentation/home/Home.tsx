@@ -24,6 +24,7 @@ import Geolocation from 'react-native-geolocation-service';
 import ClusteredMapView from 'react-native-map-clustering';
 import SpotifyRemoteTabBar from '~components/SpotifyRemoteTabBar';
 import Geocoding from 'react-native-geocoding';
+import CustomMarker from '~components/CustomMarker';
 
 async function requestPermission() {
   try {
@@ -528,14 +529,12 @@ const MapTab = () => {
               longitude: marker.longitude,
             }}
             onPress={() => handleMarkerPress(marker)}>
-            <Image
-              source={require('~images/profileimage.png')}
-              style={styles.cover}
-            />
+            {/* <Image source={require('~images/cover.png')} style={styles.cover} />
             <Image
               source={require('~images/yellowMarker.png')}
               style={styles.marker}
-            />
+            /> */}
+            <CustomMarker />
           </Marker>
         ))}
         {/* <Marker

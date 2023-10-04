@@ -21,6 +21,7 @@ import {
 import MapView, {Marker, Region} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import ClusteredMapView from 'react-native-map-clustering';
+import SpotifyRemoteTabBar from '~components/SpotifyRemoteTabBar';
 import Geocoding from 'react-native-geocoding';
 
 async function requestPermission() {
@@ -516,19 +517,22 @@ const Home = () => {
   const hideDialog = () => setVisible(false);
 
   return (
-    <ScrollView style={styles.mainBg}>
-      <Topbar onPress={toggleMode} />
-      {musicMode ? <MusicTab /> : <MapTab />}
+    <>
+      <ScrollView style={styles.mainBg}>
+        <Topbar onPress={toggleMode} />
+        {musicMode ? <MusicTab /> : <MapTab />}
 
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>모드 변경</Dialog.Title>
-          <Dialog.Content>
-            <Text>{musicMode ? '음악 모드 입니다' : '지도 모드 입니다'}</Text>
-          </Dialog.Content>
-        </Dialog>
-      </Portal>
-    </ScrollView>
+        <Portal>
+          <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog.Title>모드 변경</Dialog.Title>
+            <Dialog.Content>
+              <Text>{musicMode ? '음악 모드 입니다' : '지도 모드 입니다'}</Text>
+            </Dialog.Content>
+          </Dialog>
+        </Portal>
+      </ScrollView>
+      <SpotifyRemoteTabBar />
+    </>
   );
 };
 

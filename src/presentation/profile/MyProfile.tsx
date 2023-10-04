@@ -1,12 +1,19 @@
 import React from 'react';
-import {View, StyleSheet, ScrollView, FlatList, TouchableOpacity, Dimensions} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import {Card, Chip, Divider, IconButton, Text} from 'react-native-paper';
 import TextTicker from 'react-native-text-ticker';
 import Topbar from '~components/Topbar';
 import UserProfile from '~components/UserProfile';
+import {useNavigation} from '@react-navigation/native';
 
-interface MyProfileProps {
-}
+interface MyProfileProps {}
 
 // 가상의 게시물 데이터 배열
 const postItems = [
@@ -68,28 +75,32 @@ const postItems = [
 
 const favoriteGenre = [
   {
-    genre: "acuostic",
+    genre: 'acuostic',
   },
   {
-    genre: "death metal",
+    genre: 'death metal',
   },
   {
-    genre: "hard rock",
+    genre: 'hard rock',
   },
   {
-    genre: "k-pop",
+    genre: 'k-pop',
   },
   {
-    genre: "j-pop",
+    genre: 'j-pop',
   },
 ];
 
-const MyProfile: React.FC<MyProfileProps> = ({
-}) => {
+const MyProfile: React.FC<MyProfileProps> = ({}) => {
+  const navigation = useNavigation(); // navigation 객체 가져오기
+
+  const goToCommunityDetail = (postId: string) => {
+    navigation.navigate('CommunityDetail', {postId}); // CommunityDetail 페이지로 이동
+  };
 
   return (
     <ScrollView style={styles.mainBg}>
-      <Topbar title={"마이프로필"} />
+      <Topbar title={'마이프로필'} />
 
       <UserProfile
         profileimage={require('src/static/images/profileimage.png')}
@@ -105,7 +116,9 @@ const MyProfile: React.FC<MyProfileProps> = ({
         data={favoriteGenre}
         renderItem={({item}) => (
           <View style={styles.chipContainer}>
-            <Chip style={styles.chip} textStyle={{color: "white"}}>{item.genre}</Chip>
+            <Chip style={styles.chip} textStyle={{color: 'white'}}>
+              {item.genre}
+            </Chip>
           </View>
         )}
       />
@@ -122,9 +135,10 @@ const MyProfile: React.FC<MyProfileProps> = ({
             loop
             bounce
             repeatSpacer={50}
-            marqueeDelay={400}
-          >
-            <Text variant="bodyLarge">최대한 길게 작성해보겠습니다 어떻게 될까요 ?</Text>
+            marqueeDelay={400}>
+            <Text variant="bodyLarge">
+              최대한 길게 작성해보겠습니다 어떻게 될까요 ?
+            </Text>
           </TextTicker>
           <Text variant="bodyMedium">우효</Text>
         </View>
@@ -136,21 +150,17 @@ const MyProfile: React.FC<MyProfileProps> = ({
           icon="grid"
           iconColor="#FCD34D"
           size={30}
-          onPress={() => {
-          }}
+          onPress={() => {}}
         />
-        <Divider style={styles.bordDivider}/>
+        <Divider style={styles.bordDivider} />
         <FlatList
           style={styles.postContainer}
           data={postItems}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => goToCommunityDetail(item.id)}>
               <Card elevation={0}>
-                <Card.Cover
-                  source={item.imageSource}
-                  style={styles.postCard}
-                />
+                <Card.Cover source={item.imageSource} style={styles.postCard} />
               </Card>
             </TouchableOpacity>
           )}
@@ -161,47 +171,47 @@ const MyProfile: React.FC<MyProfileProps> = ({
   );
 };
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 const cardSize = width / 3;
 
 const styles = StyleSheet.create({
   mainBg: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   gridIcon: {
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   bordDivider: {
     borderWidth: 0.2,
   },
   postContainer: {
     flex: 1,
-    flexDirection: "column",
+    flexDirection: 'column',
   },
   postCard: {
     height: cardSize,
     width: cardSize,
-    justifyContent: "center",
+    justifyContent: 'center',
     borderRadius: 0,
     elevation: 0,
   },
   chipBox: {
-    flexDirection: "row",
+    flexDirection: 'row',
     margin: 5,
   },
   chipContainer: {
     margin: 5,
   },
   chip: {
-    alignContent: "space-between",
-    backgroundColor: "#FCD34D",
-    alignSelf: "center",
+    alignContent: 'space-between',
+    backgroundColor: '#FCD34D',
+    alignSelf: 'center',
   },
   profileMusic: {
-    overflow: "hidden",
+    overflow: 'hidden',
     width: width / 2,
-    alignSelf: "center",
-    flexDirection: "row",
+    alignSelf: 'center',
+    flexDirection: 'row',
   },
   cardCover: {
     width: 50,
@@ -210,7 +220,7 @@ const styles = StyleSheet.create({
   textBox: {
     marginLeft: 10,
     marginRight: 15,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
 });
 

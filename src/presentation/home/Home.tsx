@@ -19,6 +19,7 @@ import {
   Modal,
 } from 'react-native-paper';
 import MapView, {Marker, Region} from 'react-native-maps';
+import TextTicker from 'react-native-text-ticker';
 import Geolocation from 'react-native-geolocation-service';
 import ClusteredMapView from 'react-native-map-clustering';
 import Geocoding from 'react-native-geocoding';
@@ -37,7 +38,10 @@ async function requestPermission() {
 }
 
 // 지오코딩을 이용해서 주소 정보 가져오기
-async function getAdminAreaInfo(latitude, longitude) {
+async function getAdminAreaInfo(
+  latitude: number,
+  longitude: number,
+): Promise<string[]> {
   try {
     const apiKey = ''; // 구글 맵 API 키, 숨기는 거 아직 구현 못해서 일단 빈칸..
 
@@ -51,11 +55,14 @@ async function getAdminAreaInfo(latitude, longitude) {
 
       console.log('addressComponents: ', addressComponents);
 
-      let adminArea = '';
+      let adminArea = [];
 
       // 주소 컴포넌트에서 행정구역 정보를 추출
       for (const component of addressComponents) {
-        if (component.types.includes('sublocality_level_1')) {
+        if (
+          component.types.includes('sublocality_level_1') ||
+          component.types.includes('administrative_area_level_2')
+        ) {
           // 예시
           // country -> long_name : South Korea, short_name : KR
           // administrative_area_level_1 -> long_name : Seoul, short_name : Seoul
@@ -63,7 +70,20 @@ async function getAdminAreaInfo(latitude, longitude) {
           // sublocality_level_1 -> long_name : Gangnam-gu, short_name : Gangnam-gu
           // sublocality_level_2 -> long_name : Yeoksam-dong, short_name : Yeoksam-dong
           // premise -> long_name : 719, short_name : 719
-          adminArea = component.long_name;
+          adminArea.push(component.long_name);
+          break;
+        }
+      }
+      for (const component of addressComponents) {
+        if (component.types.includes('administrative_area_level_1')) {
+          // 예시
+          // country -> long_name : South Korea, short_name : KR
+          // administrative_area_level_1 -> long_name : Seoul, short_name : Seoul
+          // postal_code -> long_name : 06221, short_name : 06221
+          // sublocality_level_1 -> long_name : Gangnam-gu, short_name : Gangnam-gu
+          // sublocality_level_2 -> long_name : Yeoksam-dong, short_name : Yeoksam-dong
+          // premise -> long_name : 719, short_name : 719
+          adminArea.push(component.long_name);
           break;
         }
       }
@@ -76,7 +96,7 @@ async function getAdminAreaInfo(latitude, longitude) {
     console.error('Error getting admin area info:', error);
   }
 
-  return '';
+  return [];
 }
 
 const mapWidth = Dimensions.get('window').width;
@@ -177,7 +197,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   tb_center: {
-    flex: 1,
+    flex: 2,
     alignItems: 'center',
   },
   tb_right: {
@@ -255,6 +275,54 @@ const HorizontalFlatList = () => {
 };
 
 const Topbar = ({onPress}: {onPress: () => void}) => {
+  // 현재 위치 정보에 대한 상태 관리 (디폴트 값은 멀캠 좌표)
+  const [location, setLocation] = useState({
+    latitude: 37.5013,
+    longitude: 127.0397,
+  });
+
+  // 현재 위치 관리하는 변수
+  const [currentArea, setCurrentArea] = React.useState<string[]>([]);
+
+  // 현재 위치와 행정구역 정보를 가져오는 함수
+  const getCurrentLocation = async () => {
+    try {
+      const result = await requestPermission();
+      if (result === 'granted') {
+        Geolocation.getCurrentPosition(
+          async pos => {
+            const {latitude, longitude} = pos.coords;
+            setLocation({latitude: latitude, longitude: longitude});
+
+            console.log(location.latitude);
+
+            // 행정구역 정보 가져오기
+            const area: string[] = await getAdminAreaInfo(
+              location.latitude,
+              location.longitude,
+            );
+
+            setCurrentArea(area);
+          },
+          error => {
+            console.log(error);
+          },
+          {
+            enableHighAccuracy: false,
+            timeout: 50000,
+          },
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // 컴포넌트가 처음 렌더링될 때 한 번 실행합니다.
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
   return (
     <View style={styles.topbar} id="myComponent">
       <View style={styles.tb_left}>
@@ -266,11 +334,18 @@ const Topbar = ({onPress}: {onPress: () => void}) => {
           style={[styles.centeredText, styles.address]}>
           내 위치
         </Text>
-        <Text
-          variant="titleMedium"
-          style={[styles.centeredText, styles.address]}>
-          서울특별시 어딘가
-        </Text>
+        <TextTicker
+          duration={5000}
+          loop
+          bounce
+          repeatSpacer={40}
+          marqueeDelay={100}>
+          <Text
+            variant="titleMedium"
+            style={[styles.centeredText, styles.address]}>
+            {currentArea[1] + ' ' + currentArea[0]}
+          </Text>
+        </TextTicker>
       </View>
       <View style={styles.tb_right}>
         <IconButton icon="earth" iconColor="yellow" onPress={onPress} />
@@ -331,10 +406,13 @@ const MapTab = () => {
   const hideModal = () => setVisible(false);
 
   // 행정구역 관리하는 변수
-  const [adminArea, setAdminArea] = React.useState('');
+  const [adminArea, setAdminArea] = React.useState<string[]>([]);
 
   // 마커 눌렀을 때 반응하는 함수
-  const handleMarkerPress = async marker => {
+  const handleMarkerPress = async (marker: {
+    latitude: number;
+    longitude: number;
+  }) => {
     // 마커의 좌표를 이용하여 행정구역 정보를 가져옵니다.
     const adminAreaInfo = await getAdminAreaInfo(
       marker.latitude,
@@ -494,7 +572,7 @@ const MapTab = () => {
                 style={[styles.logo, styles.transparentImage]}
               />
               <View style={styles.modalContent}>
-                <Text>주소 : {adminArea}</Text>
+                <Text>주소 : {adminArea[1] + ' ' + adminArea[0]}</Text>
               </View>
             </View>
           </Modal>

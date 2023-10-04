@@ -1,4 +1,4 @@
-import Login from '../../presentation/start/Login';
+import Login from '~presentation/login/Login';
 
 const LoginContainer = ({navigation}: any) => {
   const onPress = () => {

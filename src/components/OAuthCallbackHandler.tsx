@@ -31,7 +31,7 @@ const OAuthCallbackHandler = ({route}: any) => {
     scopes: [ApiScope.AppRemoteControlScope, ApiScope.UserFollowReadScope],
   };
 
-  // DeepLink URL에서 access/refreshToken 추출
+  // 1)Spotify Remote를 위한 Spotity Authentication 수행
   useEffect(() => {
     getSpotifyToken().then(() => {
       setAccessToken(route.params.accessToken);
@@ -39,7 +39,7 @@ const OAuthCallbackHandler = ({route}: any) => {
     });
   }, []);
 
-  // 추출한 access/refreshToken을 SecureStore 및 Atom 전역 state에 저장
+  // 2)추출한 access/refreshToken을 SecureStore 및 Atom 전역 state에 저장
   useEffect(() => {
     if (accessToken && refreshToken) {
       saveTokenToSecureStore('accessToken', accessToken).then(() => {

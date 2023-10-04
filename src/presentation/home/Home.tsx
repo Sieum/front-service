@@ -23,82 +23,12 @@ import TextTicker from 'react-native-text-ticker';
 import Geolocation from 'react-native-geolocation-service';
 import ClusteredMapView from 'react-native-map-clustering';
 import SpotifyRemoteTabBar from '~components/SpotifyRemoteTabBar';
-import Geocoding from 'react-native-geocoding';
-
-async function requestPermission() {
-  try {
-    // 안드로이드 위치 정보 수집 권한 요청
-    if (Platform.OS === 'android') {
-      return await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      );
-    }
-  } catch (e) {
-    console.log(e);
-  }
-}
+import Geocoding from 'react-native-geocoding'; //행정구역 반환
+import Config from 'react-native-config';
+import {LocationNameAtom} from '~recoil/LocationAtom';
+import {useRecoilValue} from 'recoil';
 
 // 지오코딩을 이용해서 주소 정보 가져오기
-async function getAdminAreaInfo(
-  latitude: number,
-  longitude: number,
-): Promise<string[]> {
-  try {
-    const apiKey = ''; // 구글 맵 API 키, 숨기는 거 아직 구현 못해서 일단 빈칸..
-
-    await Geocoding.init(apiKey);
-    const response = await Geocoding.from({latitude, longitude});
-
-    console.log('Geocoding response:', response); // 응답 내용을 로그로 출력
-
-    if (response && response.results && response.results.length > 0) {
-      const addressComponents = response.results[0].address_components;
-
-      console.log('addressComponents: ', addressComponents);
-
-      let adminArea = [];
-
-      // 주소 컴포넌트에서 행정구역 정보를 추출
-      for (const component of addressComponents) {
-        if (
-          component.types.includes('sublocality_level_1') ||
-          component.types.includes('administrative_area_level_2')
-        ) {
-          // 예시
-          // country -> long_name : South Korea, short_name : KR
-          // administrative_area_level_1 -> long_name : Seoul, short_name : Seoul
-          // postal_code -> long_name : 06221, short_name : 06221
-          // sublocality_level_1 -> long_name : Gangnam-gu, short_name : Gangnam-gu
-          // sublocality_level_2 -> long_name : Yeoksam-dong, short_name : Yeoksam-dong
-          // premise -> long_name : 719, short_name : 719
-          adminArea.push(component.long_name);
-          break;
-        }
-      }
-      for (const component of addressComponents) {
-        if (component.types.includes('administrative_area_level_1')) {
-          // 예시
-          // country -> long_name : South Korea, short_name : KR
-          // administrative_area_level_1 -> long_name : Seoul, short_name : Seoul
-          // postal_code -> long_name : 06221, short_name : 06221
-          // sublocality_level_1 -> long_name : Gangnam-gu, short_name : Gangnam-gu
-          // sublocality_level_2 -> long_name : Yeoksam-dong, short_name : Yeoksam-dong
-          // premise -> long_name : 719, short_name : 719
-          adminArea.push(component.long_name);
-          break;
-        }
-      }
-
-      console.log('Admin Area:', adminArea); // 추출한 행정 구역 정보를 로그로 출력
-
-      return adminArea;
-    }
-  } catch (error) {
-    console.error('Error getting admin area info:', error);
-  }
-
-  return [];
-}
 
 const mapWidth = Dimensions.get('window').width;
 let mapHeight = Dimensions.get('window').height;
@@ -110,8 +40,9 @@ const styles = StyleSheet.create({
   },
   map: {
     // flex:1로 바꾸면 터짐
+    // flex: 1,
     width: mapWidth,
-    height: mapHeight * 0.82,
+    height: mapHeight,
   },
   buttonContainer: {
     flexDirection: 'column',
@@ -276,53 +207,7 @@ const HorizontalFlatList = () => {
 };
 
 const Topbar = ({onPress}: {onPress: () => void}) => {
-  // 현재 위치 정보에 대한 상태 관리 (디폴트 값은 멀캠 좌표)
-  const [location, setLocation] = useState({
-    latitude: 37.5013,
-    longitude: 127.0397,
-  });
-
-  // 현재 위치 관리하는 변수
-  const [currentArea, setCurrentArea] = React.useState<string[]>([]);
-
-  // 현재 위치와 행정구역 정보를 가져오는 함수
-  const getCurrentLocation = async () => {
-    try {
-      const result = await requestPermission();
-      if (result === 'granted') {
-        Geolocation.getCurrentPosition(
-          async pos => {
-            const {latitude, longitude} = pos.coords;
-            setLocation({latitude: latitude, longitude: longitude});
-
-            console.log(location.latitude);
-
-            // 행정구역 정보 가져오기
-            const area: string[] = await getAdminAreaInfo(
-              location.latitude,
-              location.longitude,
-            );
-
-            setCurrentArea(area);
-          },
-          error => {
-            console.log(error);
-          },
-          {
-            enableHighAccuracy: false,
-            timeout: 50000,
-          },
-        );
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // 컴포넌트가 처음 렌더링될 때 한 번 실행합니다.
-  useEffect(() => {
-    getCurrentLocation();
-  }, []);
+  const locationName = useRecoilValue(LocationNameAtom);
 
   return (
     <View style={styles.topbar} id="myComponent">
@@ -344,7 +229,7 @@ const Topbar = ({onPress}: {onPress: () => void}) => {
           <Text
             variant="titleMedium"
             style={[styles.centeredText, styles.address]}>
-            {currentArea[1] + ' ' + currentArea[0]}
+            {locationName}
           </Text>
         </TextTicker>
       </View>
@@ -468,38 +353,6 @@ const MapTab = () => {
       mapRef.current.animateToRegion(newRegion, 500);
     }
   };
-
-  // 현재 위치에 대한 관리
-  useEffect(() => {
-    requestPermission().then(result => {
-      console.log({result});
-      if (result === 'granted') {
-        Geolocation.getCurrentPosition(
-          pos => {
-            const {latitude, longitude} = pos.coords; // 위치 정보에서 위도와 경도 추출
-            setLocation({latitude: latitude, longitude: longitude}); // 위도와 경도를 포함한 객체를 상태 변수에 저장
-            console.log('현재 위도: ' + latitude);
-            console.log('현재 경도: ' + longitude);
-          },
-          error => {
-            console.log(error);
-          },
-          {
-            enableHighAccuracy: false,
-            timeout: 50000,
-          },
-        );
-      }
-    });
-  }, []);
-
-  if (!location) {
-    return (
-      <View>
-        <Text>Splash Screen</Text>
-      </View>
-    );
-  }
 
   return (
     <View style={styles.container}>

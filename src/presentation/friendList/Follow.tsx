@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
-import { Text, Button } from 'react-native-paper';
-import BackTopbar from '~components/BackTopBar';
+import React, {useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
+import {Text, Button} from 'react-native-paper';
+import Topbar from '~components/Topbar';
 
 const followersData = [
   {
@@ -128,7 +134,7 @@ const Follow: React.FC = () => {
 
   return (
     <View style={styles.mainBg}>
-      <BackTopbar title="닉네임 들어감"/>
+      <Topbar title="{nickname}님의 친구목록" />
       <View style={styles.tabButtons}>
         <TouchableOpacity
           style={[styles.tabButton, isFollowersTab && styles.activeTabButton]}
@@ -176,7 +182,7 @@ const Follow: React.FC = () => {
 
 const styles = StyleSheet.create({
   mainBg: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   tabButtons: {
     flexDirection: 'row',

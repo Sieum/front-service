@@ -1,12 +1,10 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   StyleSheet,
   ScrollView,
   FlatList,
   Image,
-  Platform,
-  PermissionsAndroid,
   Dimensions,
 } from 'react-native';
 import {
@@ -20,11 +18,8 @@ import {
 } from 'react-native-paper';
 import MapView, {Marker, Region} from 'react-native-maps';
 import TextTicker from 'react-native-text-ticker';
-import Geolocation from 'react-native-geolocation-service';
 import ClusteredMapView from 'react-native-map-clustering';
 import SpotifyRemoteTabBar from '~components/SpotifyRemoteTabBar';
-import Geocoding from 'react-native-geocoding'; //행정구역 반환
-import Config from 'react-native-config';
 import {LocationNameAtom} from '~recoil/LocationAtom';
 import {useRecoilValue} from 'recoil';
 

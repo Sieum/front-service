@@ -21,6 +21,7 @@ import {
 import MapView, {Marker, Region} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import ClusteredMapView from 'react-native-map-clustering';
+import Geocoding from 'react-native-geocoding';
 
 async function requestPermission() {
   try {
@@ -35,6 +36,49 @@ async function requestPermission() {
   }
 }
 
+// 지오코딩을 이용해서 주소 정보 가져오기
+async function getAdminAreaInfo(latitude, longitude) {
+  try {
+    const apiKey = ''; // 구글 맵 API 키, 숨기는 거 아직 구현 못해서 일단 빈칸..
+
+    await Geocoding.init(apiKey);
+    const response = await Geocoding.from({latitude, longitude});
+
+    console.log('Geocoding response:', response); // 응답 내용을 로그로 출력
+
+    if (response && response.results && response.results.length > 0) {
+      const addressComponents = response.results[0].address_components;
+
+      console.log('addressComponents: ', addressComponents);
+
+      let adminArea = '';
+
+      // 주소 컴포넌트에서 행정구역 정보를 추출
+      for (const component of addressComponents) {
+        if (component.types.includes('sublocality_level_1')) {
+          // 예시
+          // country -> long_name : South Korea, short_name : KR
+          // administrative_area_level_1 -> long_name : Seoul, short_name : Seoul
+          // postal_code -> long_name : 06221, short_name : 06221
+          // sublocality_level_1 -> long_name : Gangnam-gu, short_name : Gangnam-gu
+          // sublocality_level_2 -> long_name : Yeoksam-dong, short_name : Yeoksam-dong
+          // premise -> long_name : 719, short_name : 719
+          adminArea = component.long_name;
+          break;
+        }
+      }
+
+      console.log('Admin Area:', adminArea); // 추출한 행정 구역 정보를 로그로 출력
+
+      return adminArea;
+    }
+  } catch (error) {
+    console.error('Error getting admin area info:', error);
+  }
+
+  return '';
+}
+
 const mapWidth = Dimensions.get('window').width;
 let mapHeight = Dimensions.get('window').height;
 
@@ -46,7 +90,7 @@ const styles = StyleSheet.create({
   map: {
     // flex:1로 바꾸면 터짐
     width: mapWidth,
-    height: mapHeight * 0.9,
+    height: mapHeight * 0.82,
   },
   buttonContainer: {
     flexDirection: 'column',
@@ -286,6 +330,23 @@ const MapTab = () => {
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
+  // 행정구역 관리하는 변수
+  const [adminArea, setAdminArea] = React.useState('');
+
+  // 마커 눌렀을 때 반응하는 함수
+  const handleMarkerPress = async marker => {
+    // 마커의 좌표를 이용하여 행정구역 정보를 가져옵니다.
+    const adminAreaInfo = await getAdminAreaInfo(
+      marker.latitude,
+      marker.longitude,
+    );
+
+    if (adminAreaInfo) {
+      setAdminArea(adminAreaInfo);
+      showModal();
+    }
+  };
+
   const handleZoomIn = () => {
     if (currentRegion && mapRef.current) {
       // 만약 현재 지도 영역과 맵 참조가 존재한다면
@@ -387,7 +448,7 @@ const MapTab = () => {
               latitude: marker.latitude,
               longitude: marker.longitude,
             }}
-            onPress={showModal}>
+            onPress={() => handleMarkerPress(marker)}>
             <Image
               source={require('~images/profileimage.png')}
               style={styles.cover}
@@ -433,12 +494,7 @@ const MapTab = () => {
                 style={[styles.logo, styles.transparentImage]}
               />
               <View style={styles.modalContent}>
-                <Text>여기에 각종 정보 들어갈 예정</Text>
-                <Text>여기에 각종 정보 들어갈 예정</Text>
-                <Text>여기에 각종 정보 들어갈 예정</Text>
-                <Text>여기에 각종 정보 들어갈 예정</Text>
-                <Text>여기에 각종 정보 들어갈 예정</Text>
-                <Text>여기에 각종 정보 들어갈 예정</Text>
+                <Text>주소 : {adminArea}</Text>
               </View>
             </View>
           </Modal>
@@ -474,7 +530,6 @@ const Home = () => {
       </Portal>
     </ScrollView>
   );
-
 };
 
 export default Home;

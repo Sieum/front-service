@@ -9,3 +9,8 @@ export const RefreshTokenAtom = atom({
   key: 'refreshToken',
   default: '',
 });
+
+export const SpotifyTokenAtom = atom({
+  key: 'spotifyToken',
+  default: '',
+});

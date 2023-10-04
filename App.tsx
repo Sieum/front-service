@@ -4,8 +4,10 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Linking, StatusBar} from 'react-native';
 import React from 'react';
 import {RecoilRoot} from 'recoil';
-import { PaperProvider } from "react-native-paper";
+import {PaperProvider} from 'react-native-paper';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
+const queryClient = new QueryClient();
 
 function App() {
   const config: {screens: PathConfigMap<object>} = {
@@ -29,10 +31,12 @@ function App() {
     <RecoilRoot>
       <PaperProvider>
         <SafeAreaProvider>
-          <StatusBar hidden={true} />
-          <NavigationContainer linking={linking}>
-            <Navigation />
-          </NavigationContainer>
+          <QueryClientProvider client={queryClient}>
+            <StatusBar hidden={true} />
+            <NavigationContainer linking={linking}>
+              <Navigation />
+            </NavigationContainer>
+          </QueryClientProvider>
         </SafeAreaProvider>
       </PaperProvider>
     </RecoilRoot>

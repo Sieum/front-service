@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -12,6 +12,7 @@ import TextTicker from 'react-native-text-ticker';
 import Topbar from '~components/Topbar';
 import UserProfile from '~components/UserProfile';
 import {useNavigation} from '@react-navigation/native';
+import {getProfiileImage} from '~apis/spotifyApi';
 import {useRecoilValue} from 'recoil'; // Recoil에서 useRecoilValue import
 
 import {myProfileInfoAtom} from '~recoil/MemberAtom'; // MyProfile Atom을 import
@@ -95,23 +96,54 @@ const favoriteGenre = [
 ];
 
 const MyProfile: React.FC<MyProfileProps> = ({}) => {
+  interface SpotifyUserResponse {
+    display_name?: string;
+    external_urls?: {
+      spotify?: string;
+    };
+    followers?: {
+      href?: string;
+      total?: number;
+    };
+    href?: string;
+    id?: string;
+    images?: {
+      url?: string;
+      height?: number;
+      width?: number;
+    }[];
+    type?: string;
+    uri?: string;
+  }
+
+  const [profileImageUrl, setProfileImageUrl] = useState('');
+
   const navigation = useNavigation(); // navigation 객체 가져오기
-
-  // Recoil에서 nickname 상태 가져오기
-  const myProfile = useRecoilValue(myProfileInfoAtom);
-
-  const profileImageUrl = myProfile.profileImageUrl;
 
   const goToCommunityDetail = (postId: string) => {
     navigation.navigate('CommunityDetail', {postId}); // CommunityDetail 페이지로 이동
   };
 
+  const myProfile = useRecoilValue(myProfileInfoAtom);
+  const spotifyId = myProfile.spotifyId;
+
+  useEffect(() => {
+    async function getData() {
+      const profile: SpotifyUserResponse = await getProfiileImage(spotifyId);
+      if (profile.images && profile.images.length > 0) {
+        setProfileImageUrl(profile.images[0].url);
+      }
+    }
+    getData();
+  }, []);
+
+  console.log(profileImageUrl);
   return (
     <ScrollView style={styles.mainBg}>
       <Topbar title={'마이프로필'} />
 
       <UserProfile
-        profileimage={profileImageUrl}
+        profileimage={{uri: profileImageUrl}}
         postNum={5}
         friendNum={55}
         playlistNum={4}

@@ -177,6 +177,10 @@ const CommunityContainer: React.FC = () => {
     navigation.navigate('CommunityDetail', {postId}); // CommunityDetail 페이지로 이동
   };
 
+  const goToCommunityCreate = () => {
+    navigation.navigate('CommunityCreate'); // CommunityCreate 페이지로 이동
+  };
+
   return (
     <View style={styles.mainBg}>
       <Topbar title={'커뮤니티'} />
@@ -195,9 +199,7 @@ const CommunityContainer: React.FC = () => {
         icon="plus"
         color="white"
         style={styles.fab}
-        onPress={() => {
-          // 게시글 작성 창 이동
-        }}
+        onPress={() => goToCommunityCreate()}
       />
     </View>
   );

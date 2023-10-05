@@ -11,6 +11,7 @@ import {useRecoilState} from 'recoil';
 import {AccessTokenAtom} from '~recoil/TokenAtom';
 import EditProfile from '~presentation/profile/EditProfile';
 import CommunityDetail from '~presentation/community/CommunityDetail';
+import CommunityCreate from '~presentation/community/CommunityCreate';
 
 const Nav = createNativeStackNavigator();
 
@@ -43,6 +44,7 @@ const Navigation = () => {
           {/* EditProfile 스크린 추가 */}
           <Nav.Screen name="EditProfile" component={EditProfile} />
           <Nav.Screen name="CommunityDetail" component={CommunityDetail} />
+          <Nav.Screen name="CommunityCreate" component={CommunityCreate} />
         </>
       ) : (
         <>

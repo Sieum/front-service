@@ -7,26 +7,37 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import {
-  Text,
-  Card,
-  IconButton,
-  Portal,
-  Dialog,
-  FAB,
-  Modal,
-} from 'react-native-paper';
+import {Text, Card, Portal, Dialog, FAB, Modal} from 'react-native-paper';
 import MapView, {Marker, Region} from 'react-native-maps';
-import TextTicker from 'react-native-text-ticker';
 import ClusteredMapView from 'react-native-map-clustering';
 import SpotifyRemoteTabBar from '~components/SpotifyRemoteTabBar';
-import {LocationNameAtom} from '~recoil/LocationAtom';
-import {useRecoilValue} from 'recoil';
+import TopBar from '~presentation/home/TopBar';
 
-// 지오코딩을 이용해서 주소 정보 가져오기
+const Home = props => {
+  const [visible, setVisible] = useState(false);
+  const hideDialog = () => setVisible(false);
+  console.log('props : ', props);
+  return (
+    <>
+      <ScrollView style={styles.mainBg}>
+        <TopBar toggleMode={props.toggleMode} />
+        {props.musicMode ? <MusicTab /> : <MapTab />}
 
-const mapWidth = Dimensions.get('window').width;
-let mapHeight = Dimensions.get('window').height;
+        <Portal>
+          <Dialog visible={visible} onDismiss={hideDialog}>
+            <Dialog.Title>모드 변경</Dialog.Title>
+            <Dialog.Content>
+              <Text>
+                {props.musicMode ? '음악 모드 입니다' : '지도 모드 입니다'}
+              </Text>
+            </Dialog.Content>
+          </Dialog>
+        </Portal>
+      </ScrollView>
+      <SpotifyRemoteTabBar />
+    </>
+  );
+};
 
 const HorizontalFlatList = () => {
   const data = [
@@ -65,41 +76,6 @@ const HorizontalFlatList = () => {
     />
   );
 };
-
-const Topbar = ({onPress}: {onPress: () => void}) => {
-  const locationName = useRecoilValue(LocationNameAtom);
-
-  return (
-    <View style={styles.topbar} id="myComponent">
-      <View style={styles.tb_left}>
-        <Image source={require('~images/Logo.png')} style={styles.logo} />
-      </View>
-      <View style={styles.tb_center}>
-        <Text
-          variant="titleMedium"
-          style={[styles.centeredText, styles.address]}>
-          내 위치
-        </Text>
-        <TextTicker
-          duration={5000}
-          loop
-          bounce
-          repeatSpacer={40}
-          marqueeDelay={100}>
-          <Text
-            variant="titleMedium"
-            style={[styles.centeredText, styles.address]}>
-            {locationName}
-          </Text>
-        </TextTicker>
-      </View>
-      <View style={styles.tb_right}>
-        <IconButton icon="earth" iconColor="yellow" onPress={onPress} />
-      </View>
-    </View>
-  );
-};
-
 const MusicTab = () => {
   return (
     <View>
@@ -217,7 +193,7 @@ const MapTab = () => {
   return (
     <View style={styles.container}>
       {/*  MapView에 대한 참조를 연결
-      멀캠 좌표 (37.5013, 127.0397) 
+      멀캠 좌표 (37.5013, 127.0397)
       처음 지역 원래 location.latitude, location.longitude로 해야 됨..*/}
       <ClusteredMapView
         clusterColor="#FCD34D"
@@ -296,36 +272,8 @@ const MapTab = () => {
   );
 };
 
-const Home = () => {
-  const [musicMode, setMusicMode] = useState(true);
-  const [visible, setVisible] = useState(false);
-
-  const toggleMode = () => {
-    setMusicMode(!musicMode);
-    setVisible(true);
-  };
-
-  const hideDialog = () => setVisible(false);
-
-  return (
-    <>
-      <ScrollView style={styles.mainBg}>
-        <Topbar onPress={toggleMode} />
-        {musicMode ? <MusicTab /> : <MapTab />}
-
-        <Portal>
-          <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Title>모드 변경</Dialog.Title>
-            <Dialog.Content>
-              <Text>{musicMode ? '음악 모드 입니다' : '지도 모드 입니다'}</Text>
-            </Dialog.Content>
-          </Dialog>
-        </Portal>
-      </ScrollView>
-      <SpotifyRemoteTabBar />
-    </>
-  );
-};
+const mapWidth = Dimensions.get('window').width;
+let mapHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   // 지도 관련 스타일
@@ -399,9 +347,6 @@ const styles = StyleSheet.create({
   mainBg: {
     backgroundColor: 'white',
   },
-  centeredText: {
-    textAlign: 'center',
-  },
   logo: {
     width: 50,
     height: 20,
@@ -416,22 +361,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 5,
     // paddingHorizontal: 20, // 양쪽 여백 임시
-  },
-  tb_left: {
-    flex: 1,
-    alignItems: 'flex-start',
-    paddingLeft: 10,
-  },
-  tb_center: {
-    flex: 2,
-    alignItems: 'center',
-  },
-  tb_right: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  address: {
-    fontWeight: 'bold',
   },
   textShadow: {
     textShadowColor: 'rgba(0, 0, 0, 0.75)',

@@ -1,11 +1,12 @@
 import axios from 'axios';
 import RNSecureStorage from 'rn-secure-storage';
+import Config from 'react-native-config';
 
 // local vue api axios instance
 
-function SpotifyApiInstance() {
+function RestApiInstance() {
   const instance = axios.create({
-    baseURL: 'https://api.spotify.com/v1',
+    baseURL: `${Config.API_BASE_URL}/api`,
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
@@ -13,12 +14,12 @@ function SpotifyApiInstance() {
 
   instance.interceptors.request.use(async config => {
     if (!config.headers) return config;
-    const spotifyToken = await RNSecureStorage.get('spotifyToken');
-    config.headers.Authorization = `Bearer ${spotifyToken}`;
+    const accessToken = await RNSecureStorage.get('accessToken');
+    config.headers.Authorization = accessToken;
     return config;
   });
 
   return instance;
 }
 
-export {SpotifyApiInstance};
+export {RestApiInstance};

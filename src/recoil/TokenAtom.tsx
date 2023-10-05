@@ -1,16 +1,16 @@
 import {atom} from 'recoil';
 
-export const AccessTokenAtom = atom({
+export const AccessTokenAtom = atom<string>({
   key: 'accessToken',
   default: '',
 });
 
-export const RefreshTokenAtom = atom({
+export const RefreshTokenAtom = atom<string>({
   key: 'refreshToken',
   default: '',
 });
 
-export const SpotifyTokenAtom = atom({
+export const SpotifyTokenAtom = atom<string>({
   key: 'spotifyToken',
   default: '',
 });

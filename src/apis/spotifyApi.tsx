@@ -29,6 +29,27 @@ export async function getAccessToken() {
     }
 }
 
+// 기준곡으로 스포티파이 추천 조회
+export async function getRecommend(seedTracks: string) {
+    try {
+    const accessToken = await getAccessToken();
+
+    const headers = {
+        Authorization: `Bearer ${accessToken}`,
+    };
+
+    const response = await axios.get(`${SPOTIFY_API_BASE_URL}/recommendations?seed_tracks=${seedTracks}`, {
+        headers,
+    });
+
+    console.log(response.data);
+    return response.data;
+    } catch (error) {
+    console.error('추천 리스트를 가져오지 못했습니다 :', error);
+    throw error;
+    }
+}
+
 // 플레이리스트 상세 조회
 export async function getPlaylistDetail(playlistId: string) {
     try {
@@ -42,7 +63,7 @@ export async function getPlaylistDetail(playlistId: string) {
         headers,
     });
 
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
     } catch (error) {
     console.error('플레이리스트 상세를 가져오지 못했습니다 :', error);
@@ -139,77 +160,6 @@ export async function searchItemByArtist(quary: string) {
 
 // 곡명으로 조회
 async function searchItemByTrack(quary: string) {
-    // interface SpotifySearchResponse {
-    //     tracks?: {
-    //     href?: string;
-    //     items?: {
-    //         album?: {
-    //         album_type?: string;
-    //         artists?: {
-    //             external_urls?: {
-    //             spotify?: string;
-    //             };
-    //             href?: string;
-    //             id?: string;
-    //             name?: string;
-    //             type?: string;
-    //             uri?: string;
-    //         }[];
-    //         external_urls?: {
-    //             spotify?: string;
-    //         };
-    //         href?: string;
-    //         id?: string;
-    //         images?: {
-    //             height?: number;
-    //             url?: string;
-    //             width?: number;
-    //         }[];
-    //         is_playable?: boolean;
-    //         name?: string;
-    //         release_date?: string;
-    //         release_date_precision?: string;
-    //         total_tracks?: number;
-    //         type?: string;
-    //         uri?: string;
-    //         };
-    //         artists?: {
-    //         external_urls?: {
-    //             spotify?: string;
-    //         };
-    //         href?: string;
-    //         id?: string;
-    //         name?: string;
-    //         type?: string;
-    //         uri?: string;
-    //         }[];
-    //         disc_number?: number;
-    //         duration_ms?: number;
-    //         explicit?: boolean;
-    //         external_ids?: {
-    //         isrc?: string;
-    //         };
-    //         external_urls?: {
-    //         spotify?: string;
-    //         };
-    //         href?: string;
-    //         id?: string;
-    //         is_local?: boolean;
-    //         is_playable?: boolean;
-    //         name?: string;
-    //         popularity?: number;
-    //         preview_url?: string | null;
-    //         track_number?: number;
-    //         type?: string;
-    //         uri?: string;
-    //     }[];
-    //     };
-    //     limit?: number;
-    //     next?: string | null;
-    //     offset?: number;
-    //     previous?: string | null;
-    //     total?: number;
-    // }
 
     try {
     const accessToken = await getAccessToken();

@@ -6,6 +6,17 @@ import HomeMapScreenContainer from '~container/home/HomeMapScreenContainer';
 import HomeMusicScreenContainer from '~container/home/HomeMusicScreenContainer';
 import { Text } from 'react-native-paper';
 
+interface MyLocationCurrentPlayingMusicList {
+  uid: string;
+  nickname: string;
+  profileImg: string;
+  musicUri: string;
+  albumTitle: string;
+  albumArtistName: string;
+  albumImg: string;
+  createdAt: number;
+}
+
 interface Props {
   toggleMode: () => void;
   musicMode: boolean;

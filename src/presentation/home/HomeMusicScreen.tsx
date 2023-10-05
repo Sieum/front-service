@@ -6,7 +6,22 @@ import TwolineFlatList from '~components/TwolineFlatList';
 import { getRecommend, searchItemByTrack } from '~apis/spotifyApi';
 import MusicFlatList from '~components/MusicFlatList';
 
+interface MyLocationCurrentPlayingMusicList {
+  uid: string;
+  nickname: string;
+  profileImg: string;
+  musicUri: string;
+  albumTitle: string;
+  albumArtistName: string;
+  albumImg: string;
+  createdAt: number;
+  latitude: number;
+  longitude: number;
+}
 
+interface Props {
+  locationPlayList: MyLocationCurrentPlayingMusicList[];
+}
 
 const HomeMusicScreen: React.FC = () => {
 
@@ -260,17 +275,21 @@ const HomeMusicScreen: React.FC = () => {
       <Text variant="headlineLarge" style={styles.listTitle}>
         오늘의 추천 음악
       </Text>
-      {/* <HorizontalFlatList /> */}
+
+      <HorizontalFlatList locationPlayList={props.locationPlayList} />
 
       <Text variant="headlineLarge" style={styles.listTitle}>
         내 근처 인기 음악
       </Text>
-      {/* <HorizontalFlatList /> */}
+
+      <HorizontalFlatList locationPlayList={props.locationPlayList} />
 
       <Text variant="headlineLarge" style={styles.listTitle}>
         랜덤 추천 음악
       </Text>
-      {/* <HorizontalFlatList /> */}
+
+      <HorizontalFlatList locationPlayList={props.locationPlayList} />
+
     </View>
   );
 };

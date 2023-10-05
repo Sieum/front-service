@@ -12,7 +12,11 @@ import {useRecoilValue} from 'recoil';
 import {LocationNameAtom} from '~recoil/LocationAtom';
 import styled from 'styled-components/native';
 
-const TopBar = ({toggleMode}: any) => {
+interface Props {
+  toggleMode: () => void;
+}
+
+const HomeTopBar: React.FC<Props> = props => {
   const locationName = useRecoilValue(LocationNameAtom);
   return (
     <View style={styles.topbar} id="myComponent">
@@ -38,7 +42,7 @@ const TopBar = ({toggleMode}: any) => {
           </Text>
         </TextTicker>
       </View>
-      <MapButton onPress={toggleMode}>
+      <MapButton onPress={props.toggleMode}>
         <MapButtonIcon source={require('~icons/map-icon.png')} />
       </MapButton>
     </View>
@@ -94,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TopBar;
+export default HomeTopBar;

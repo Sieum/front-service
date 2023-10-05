@@ -6,6 +6,7 @@ import Community from '../presentation/community/Community';
 import Home from '../presentation/home/Home';
 import PlayList from '../presentation/playList/PlayList';
 import MyProfile from '../presentation/profile/MyProfile';
+import HomeContainer from '~container/home/HomeContainer';
 
 const Tab = createBottomTabNavigator();
 
@@ -53,7 +54,7 @@ const NaigationTabBar = () => {
       })}>
       <Tab.Screen name="FriendList" component={FriendList} />
       <Tab.Screen name="Community" component={Community} />
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Home" component={HomeContainer} />
       <Tab.Screen name="PlayList" component={PlayList} />
       <Tab.Screen name="MyProfile" component={MyProfile} />
     </Tab.Navigator>

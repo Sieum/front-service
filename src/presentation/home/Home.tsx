@@ -1,9 +1,10 @@
 import React from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, ScrollView, FlatList} from 'react-native';
 import SpotifyRemoteTabBar from '~components/SpotifyRemoteTabBar';
 import HomeTopBar from '~presentation/home/HomeTopBar';
 import HomeMapScreenContainer from '~container/home/HomeMapScreenContainer';
 import HomeMusicScreenContainer from '~container/home/HomeMusicScreenContainer';
+import { Text } from 'react-native-paper';
 
 interface MyLocationCurrentPlayingMusicList {
   uid: string;
@@ -24,14 +25,20 @@ interface Props {
 const Home: React.FC<Props> = props => {
   return (
     <>
-      <ScrollView style={styles.mainBg}>
-        <HomeTopBar toggleMode={props.toggleMode} />
-        {props.musicMode ? (
+      <FlatList
+      data={"1"}
+      style={styles.mainBg}
+      renderItem={({item}) => (
+        <>
+          <HomeTopBar toggleMode={props.toggleMode} />
+          {props.musicMode ? (
           <HomeMusicScreenContainer />
         ) : (
           <HomeMapScreenContainer />
         )}
-      </ScrollView>
+        </>
+      )}
+      />
       <SpotifyRemoteTabBar />
     </>
   );

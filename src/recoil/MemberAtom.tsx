@@ -26,7 +26,7 @@ export const myProfileInfoAtom = atom<MyProfile>({
     spotifyId: '',
     nickname: '',
     profileImageUrl: '',
-    profileMusicUri: 'string',
+    profileMusicUri: '',
     albumArtist: '',
     albumImageUrl: '',
     albumTitle: '',

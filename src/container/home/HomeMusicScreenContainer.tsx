@@ -1,6 +1,10 @@
 import HomeMusicScreen from '~presentation/home/HomeMusicScreen';
+import React from 'react';
+import {LocationPlayList} from '~recoil/LocationAtom';
+import {useRecoilValue} from 'recoil';
 
 const HomeMusicScreenContainer = () => {
+  const locationPlayList = useRecoilValue(LocationPlayList);
   const data = [
     {key: '1', title: '노래1', artist: '가수이름'},
     {key: '2', title: '노래2', artist: '가수이름'},
@@ -10,7 +14,7 @@ const HomeMusicScreenContainer = () => {
     {key: '6', title: '노래6', artist: '가수이름'},
     {key: '7', title: '노래7', artist: '가수이름'},
   ];
-  return <HomeMusicScreen data={data} />;
+  return <HomeMusicScreen locationPlayList={locationPlayList} />;
 };
 
 export default HomeMusicScreenContainer;

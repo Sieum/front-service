@@ -3,10 +3,16 @@ import {PermissionsAndroid, Platform, Alert} from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import MapView from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-import axios, {AxiosResponse} from 'axios';
+import axios from 'axios';
 import Config from 'react-native-config';
-import {LocationNameAtom, LocationCodeAtom} from '~recoil/LocationAtom';
+import {
+  LocationNameAtom,
+  LocationCodeAtom,
+  MyPositionAtom,
+} from '~recoil/LocationAtom';
+import {myProfileInfoAtom} from '~recoil/MemberAtom';
 import {useSetRecoilState} from 'recoil';
+import {getMyProfile} from '~apis/memberApi';
 
 const SetMyLocationContainer = ({navigation}: any) => {
   const mapRef = useRef<MapView | null>(null);
@@ -17,9 +23,15 @@ const SetMyLocationContainer = ({navigation}: any) => {
   const [locationData, setLocationData] = useState<any>();
   const setLocationCodeAtom = useSetRecoilState(LocationCodeAtom);
   const setLocationNameAtom = useSetRecoilState(LocationNameAtom);
+  const setMyLatLng = useSetRecoilState(MyPositionAtom);
+  const setMyProfileInfoAtom = useSetRecoilState(myProfileInfoAtom);
   // Geolocation을 통해 위도, 경도 반환
   useEffect(() => {
     requestMyLatLng();
+    getMyProfile().then(res => {
+      console.log('res.data:', res.data);
+      setMyProfileInfoAtom(res.data);
+    });
   }, []);
 
   useEffect(() => {
@@ -39,6 +51,7 @@ const SetMyLocationContainer = ({navigation}: any) => {
               geoPosition => {
                 const {latitude, longitude} = geoPosition.coords;
                 setLatLng({latitude: latitude, longitude: longitude});
+                setMyLatLng({latitude: latitude, longitude: longitude});
               },
               error => {
                 console.log(error);

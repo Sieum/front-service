@@ -3,8 +3,21 @@ import {Text} from 'react-native-paper';
 import React from 'react';
 import HorizontalFlatList from '~components/HorizontalFlatList';
 
+interface MyLocationCurrentPlayingMusicList {
+  uid: string;
+  nickname: string;
+  profileImg: string;
+  musicUri: string;
+  albumTitle: string;
+  albumArtistName: string;
+  albumImg: string;
+  createdAt: number;
+  latitude: number;
+  longitude: number;
+}
+
 interface Props {
-  data: {key: string; title: string; artist: string}[];
+  locationPlayList: MyLocationCurrentPlayingMusicList[];
 }
 
 const HomeMusicScreen: React.FC<Props> = props => {
@@ -13,17 +26,17 @@ const HomeMusicScreen: React.FC<Props> = props => {
       <Text variant="headlineLarge" style={styles.listTitle}>
         오늘의 추천 음악
       </Text>
-      <HorizontalFlatList data={props.data} />
+      <HorizontalFlatList locationPlayList={props.locationPlayList} />
 
       <Text variant="headlineLarge" style={styles.listTitle}>
         내 근처 인기 음악
       </Text>
-      <HorizontalFlatList data={props.data} />
+      <HorizontalFlatList locationPlayList={props.locationPlayList} />
 
       <Text variant="headlineLarge" style={styles.listTitle}>
         랜덤 추천 음악
       </Text>
-      <HorizontalFlatList data={props.data} />
+      <HorizontalFlatList locationPlayList={props.locationPlayList} />
     </View>
   );
 };

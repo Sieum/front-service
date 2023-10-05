@@ -2,15 +2,28 @@ import React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {Card, Text} from 'react-native-paper';
 
+interface MyLocationCurrentPlayingMusicList {
+  uid: string;
+  nickname: string;
+  profileImg: string;
+  musicUri: string;
+  albumTitle: string;
+  albumArtistName: string;
+  albumImg: string;
+  createdAt: number;
+  latitude: number;
+  longitude: number;
+}
+
 interface Props {
-  data: {key: string; title: string; artist: string}[];
+  locationPlayList?: MyLocationCurrentPlayingMusicList[];
 }
 
 const HorizontalFlatList: React.FC<Props> = props => {
   return (
     <FlatList
       horizontal
-      data={props.data}
+      data={props.locationPlayList}
       showsHorizontalScrollIndicator={false}
       renderItem={({item}) => (
         <View>
@@ -23,10 +36,10 @@ const HorizontalFlatList: React.FC<Props> = props => {
           <Text
             variant="bodyMedium"
             style={[styles.musicTitle, styles.textShadow]}>
-            {item.title}
+            {item.albumTitle}
           </Text>
           <Text variant="bodyMedium" style={[styles.artist, styles.textShadow]}>
-            {item.artist}
+            {item.albumArtistName}
           </Text>
         </View>
       )}

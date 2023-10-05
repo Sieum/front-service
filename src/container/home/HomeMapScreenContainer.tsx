@@ -1,11 +1,13 @@
 import React, {useRef, useState} from 'react';
 import MapView, {Region} from 'react-native-maps';
 import HomeMapScreen from '~presentation/home/HomeMapScreen';
+import {LocationPlayList} from '~recoil/LocationAtom';
+import {useRecoilValue} from 'recoil';
 
 const HomeMapScreenContainer = () => {
   const mapRef = useRef<MapView | null>(null);
   const [currentRegion, setCurrentRegion] = useState<Region | null>(null);
-
+  const locationPlayList = useRecoilValue(LocationPlayList);
   // 모달창 상태관리
   const [visible, setVisible] = React.useState(false);
   const showModal = () => setVisible(true);
@@ -76,6 +78,7 @@ const HomeMapScreenContainer = () => {
       handleZoomIn={handleZoomIn}
       handleZoomOut={handleZoomOut}
       moveToCurrentLocation={moveToCurrentLocation}
+      locationPlayList={locationPlayList}
     />
   );
 };

@@ -4,6 +4,19 @@ import {Dimensions, Image, StyleSheet, View} from 'react-native';
 import ClusteredMapView from 'react-native-map-clustering';
 import {FAB, Modal, Portal, Text} from 'react-native-paper';
 
+interface MyLocationCurrentPlayingMusicList {
+  uid: string;
+  nickname: string;
+  profileImg: string;
+  musicUri: string;
+  albumTitle: string;
+  albumArtistName: string;
+  albumImg: string;
+  createdAt: number;
+  latitude: number;
+  longitude: number;
+}
+
 interface Props {
   mapRef: React.MutableRefObject<MapView | null>;
   markers: {latitude: number; longitude: number}[];
@@ -12,9 +25,11 @@ interface Props {
   handleZoomIn: () => void;
   handleZoomOut: () => void;
   moveToCurrentLocation: () => void;
+  locationPlayList: MyLocationCurrentPlayingMusicList[];
 }
 
 const HomeMapScreen: React.FC<Props> = props => {
+  console.log('props.locationPlayList : ', props.locationPlayList);
   return (
     <View style={styles.container}>
       {/*  MapView에 대한 참조를 연결

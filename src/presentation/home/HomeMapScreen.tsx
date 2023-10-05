@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import MapView, {Marker, Region} from 'react-native-maps';
 import {Dimensions, Image, StyleSheet, View} from 'react-native';
 import ClusteredMapView from 'react-native-map-clustering';
@@ -30,6 +30,18 @@ interface Props {
 
 const HomeMapScreen: React.FC<Props> = props => {
   console.log('props.locationPlayList : ', props.locationPlayList);
+
+  const [selectedMarker, setSelectedMarker] =
+    useState<MyLocationCurrentPlayingMusicList | null>(null);
+
+  const showModal = (marker: MyLocationCurrentPlayingMusicList) => {
+    setSelectedMarker(marker);
+  };
+
+  const hideModal = () => {
+    setSelectedMarker(null);
+  };
+
   return (
     <View style={styles.container}>
       {/*  MapView에 대한 참조를 연결
@@ -56,11 +68,8 @@ const HomeMapScreen: React.FC<Props> = props => {
               latitude: marker.latitude,
               longitude: marker.longitude,
             }}
-            onPress={() => console.log('Clicked Marker')}>
-            <Image
-              source={{uri : marker.albumImg}}
-              style={styles.cover}
-            />
+            onPress={() => showModal(marker)}>
+            <Image source={{uri: marker.albumImg}} style={styles.cover} />
             <Image
               source={require('~images/yellowMarker.png')}
               style={styles.marker}
@@ -89,25 +98,37 @@ const HomeMapScreen: React.FC<Props> = props => {
       </View>
 
       {/* 모달창 정보 */}
-      {/*<View>*/}
-      {/*  <Portal>*/}
-      {/*    <Modal visible={visible} onDismiss={hideModal}>*/}
-      {/*      <View style={styles.modalContainer}>*/}
-      {/*        <Image*/}
-      {/*          source={require('~images/profileimage.png')}*/}
-      {/*          style={[styles.logo, styles.transparentProfile]}*/}
-      {/*        />*/}
-      {/*        <Image*/}
-      {/*          source={require('~images/hand.png')}*/}
-      {/*          style={[styles.logo, styles.transparentImage]}*/}
-      {/*        />*/}
-      {/*        <View style={styles.modalContent}>*/}
-      {/*          <Text>주소 : {adminArea[1] + ' ' + adminArea[0]}</Text>*/}
-      {/*        </View>*/}
-      {/*      </View>*/}
-      {/*    </Modal>*/}
-      {/*  </Portal>*/}
-      {/*</View>*/}
+      <View>
+        <Portal>
+          <Modal visible={selectedMarker !== null} onDismiss={hideModal}>
+            <View style={styles.modalContainer}>
+              <Image
+                source={require('~images/profileimage.png')}
+                style={[styles.logo, styles.transparentProfile]}
+              />
+              <Image
+                source={require('~images/hand.png')}
+                style={[styles.logo, styles.transparentImage]}
+              />
+              {selectedMarker && (
+                <View style={styles.modalContent}>
+                  <Image
+                    source={{uri: selectedMarker.albumImg}}
+                    style={styles.markerCover}
+                  />
+                  <Text variant="bodyLarge" style={styles.musicTitle}>
+                    {selectedMarker.albumTitle}
+                  </Text>
+                  <Text variant="bodyMedium" style={styles.artistName}>
+                    {selectedMarker.albumArtistName}
+                  </Text>
+                  {/* 기타 필요한 정보 추가 */}
+                </View>
+              )}
+            </View>
+          </Modal>
+        </Portal>
+      </View>
     </View>
   );
 };
@@ -144,7 +165,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // 투명 배경 설정
   },
   modalContent: {
-    backgroundColor: 'yellow', // 투명
+    backgroundColor: '#FCD34D', // 투명
     padding: 20,
     borderRadius: 8,
     alignItems: 'center',
@@ -185,6 +206,14 @@ const styles = StyleSheet.create({
     width: 50,
     height: 20,
     resizeMode: 'contain',
+  },
+  musicTitle: {},
+  artistName: {},
+  markerCover: {
+    width: 80,
+    height: 80,
+    borderRadius: 25,
+    marginBottom: 10,
   },
 });
 

@@ -12,6 +12,9 @@ import TextTicker from 'react-native-text-ticker';
 import Topbar from '~components/Topbar';
 import UserProfile from '~components/UserProfile';
 import {useNavigation} from '@react-navigation/native';
+import {useRecoilValue} from 'recoil'; // Recoil에서 useRecoilValue import
+
+import {myProfileInfoAtom} from '~recoil/MemberAtom'; // MyProfile Atom을 import
 
 interface MyProfileProps {}
 
@@ -94,6 +97,11 @@ const favoriteGenre = [
 const MyProfile: React.FC<MyProfileProps> = ({}) => {
   const navigation = useNavigation(); // navigation 객체 가져오기
 
+  // Recoil에서 nickname 상태 가져오기
+  const myProfile = useRecoilValue(myProfileInfoAtom);
+
+  const profileImageUrl = myProfile.profileImageUrl;
+
   const goToCommunityDetail = (postId: string) => {
     navigation.navigate('CommunityDetail', {postId}); // CommunityDetail 페이지로 이동
   };
@@ -103,7 +111,7 @@ const MyProfile: React.FC<MyProfileProps> = ({}) => {
       <Topbar title={'마이프로필'} />
 
       <UserProfile
-        profileimage={require('src/static/images/profileimage.png')}
+        profileimage={profileImageUrl}
         postNum={5}
         friendNum={55}
         playlistNum={4}

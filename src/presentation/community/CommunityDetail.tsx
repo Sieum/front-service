@@ -4,28 +4,6 @@ import {Card, IconButton, Text} from 'react-native-paper';
 import BackTopbar from '~components/BackTopBar';
 import {useRoute} from '@react-navigation/native';
 
-// // 게시물 아이템의 타입 정의
-// interface postData {
-//   id: string;
-//   username: string;
-//   userProfileImage: number; // 이미지 파일 경로로 수정
-//   postImage: number; // 이미지 파일 경로로 수정
-//   caption: string;
-//   like: string;
-//   reply: string;
-// }
-
-// const postData = {
-//   id: '1',
-//   username: 'user1',
-//   userProfileImage: require('src/static/images/profileimage.png'),
-//   postImage: require('src/static/images/cover.png'),
-//   caption:
-//     '게시글 내용 1dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
-//   like: '232',
-//   reply: '10',
-// };
-
 interface PostItem {
   id: string;
   username: string;

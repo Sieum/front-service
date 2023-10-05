@@ -9,6 +9,8 @@ import LoginWebView from '../presentation/start/LoginWebView';
 import LoginContainer from '../container/login/LoginContainer';
 import {useRecoilState} from 'recoil';
 import {AccessTokenAtom} from '~recoil/TokenAtom';
+import EditProfile from '~presentation/profile/EditProfile';
+import CommunityDetail from '~presentation/community/CommunityDetail';
 
 const Nav = createNativeStackNavigator();
 
@@ -38,6 +40,9 @@ const Navigation = () => {
         <>
           <Nav.Screen name="NavigationTabBar" component={NavigationTabBar} />
           <Nav.Screen name="Stack" component={Stack} />
+          {/* EditProfile 스크린 추가 */}
+          <Nav.Screen name="EditProfile" component={EditProfile} />
+          <Nav.Screen name="CommunityDetail" component={CommunityDetail} />
         </>
       ) : (
         <>

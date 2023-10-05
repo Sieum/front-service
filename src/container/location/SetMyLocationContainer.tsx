@@ -14,7 +14,7 @@ const SetMyLocationContainer = ({navigation}: any) => {
     latitude: 37.5013,
     longitude: 127.0397,
   });
-  const [locationData, setLocationData] = useState<AxiosResponse<any, any>>();
+  const [locationData, setLocationData] = useState<any>();
   const setLocationCodeAtom = useSetRecoilState(LocationCodeAtom);
   const setLocationNameAtom = useSetRecoilState(LocationNameAtom);
   // Geolocation을 통해 위도, 경도 반환

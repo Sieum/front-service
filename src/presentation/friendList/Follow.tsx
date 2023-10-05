@@ -9,6 +9,10 @@ import {
 import {Text, Button} from 'react-native-paper';
 import Topbar from '~components/Topbar';
 
+import {useRecoilValue} from 'recoil'; // Recoil에서 useRecoilValue import
+
+import {myProfileInfoAtom} from '~recoil/MemberAtom'; // MyProfile Atom을 import
+
 const followersData = [
   {
     id: '1',
@@ -118,6 +122,10 @@ const Follow: React.FC = () => {
     isFollowersTab ? followersData : followingData,
   );
 
+  const myProfile = useRecoilValue(myProfileInfoAtom);
+
+  const nickname = myProfile.nickname;
+
   const toggleFollowStatus = (id: string) => {
     // 팔로우 상태 토글 로직을 여기에 추가합니다.
     // API 호출 또는 상태 업데이트 등
@@ -134,7 +142,7 @@ const Follow: React.FC = () => {
 
   return (
     <View style={styles.mainBg}>
-      <Topbar title="{nickname}님의 친구목록" />
+      <Topbar title={`${nickname}님의 친구목록`} />
       <View style={styles.tabButtons}>
         <TouchableOpacity
           style={[styles.tabButton, isFollowersTab && styles.activeTabButton]}

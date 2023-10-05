@@ -61,6 +61,7 @@ const OAuthCallbackHandler = ({route}: any) => {
       .then(res => {
         console.log('Spotify Authentication Success!', res);
         setSpotifyTokenAtom(res.accessToken);
+        saveTokenToSecureStore('spotifyToken', res.accessToken);
       })
       .catch(err => console.log('Spotify Authentication Failed!!', err));
   };

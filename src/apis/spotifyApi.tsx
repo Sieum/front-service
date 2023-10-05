@@ -2,6 +2,27 @@ import {SpotifyApiInstance} from './SpotifyApiInstance';
 
 const api = SpotifyApiInstance();
 
+// 기준곡으로 스포티파이 추천 조회
+export async function getRecommend(seedTracks: string) {
+    try {
+    const accessToken = await getAccessToken();
+
+    const headers = {
+        Authorization: `Bearer ${accessToken}`,
+    };
+
+    const response = await axios.get(`${SPOTIFY_API_BASE_URL}/recommendations?seed_tracks=${seedTracks}`, {
+        headers,
+    });
+
+    console.log(response.data);
+    return response.data;
+    } catch (error) {
+    console.error('추천 리스트를 가져오지 못했습니다 :', error);
+    throw error;
+    }
+}
+
 // 플레이리스트 상세 조회
 export async function getPlaylistDetail(playlistId: string) {
   try {
@@ -59,6 +80,18 @@ export async function searchItemByArtist(quary: string) {
 
 // 곡명으로 조회
 async function searchItemByTrack(quary: string) {
+
+    try {
+    const accessToken = await getAccessToken();
+
+    const headers = {
+        Authorization: `Bearer ${accessToken}`,
+    };
+
+    const response = await axios.get(`${SPOTIFY_API_BASE_URL}/search?q=${quary}&type=track`, {
+        headers,
+    });
+
   try {
     const response = await api.get(`/search?q=${quary}&type=track`);
     return response.data;

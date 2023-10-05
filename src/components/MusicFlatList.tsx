@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from "react";
-import { View, StyleSheet, FlatList, TouchableOpacity, } from "react-native";
-import { Card, Text } from "react-native-paper";
-import { useRoute } from '@react-navigation/native';
-import { getPlaylistDetail } from "~apis/spotifyApi";
-import BackTopbar from "~components/BackTopBar";
+import React, { useEffect, useState } from 'react';
+import {FlatList, StyleSheet, View} from 'react-native';
+import {Card, Text} from 'react-native-paper';
+import { getPlaylistDetail } from '~apis/spotifyApi';
 
-const PlaylistDetail = () => {
+const MusicFlatList: React.FC = ({props}) => {
+
     interface SpotifyShowsResponse {
         href?: string;
         limit?: number;
@@ -114,72 +113,87 @@ const PlaylistDetail = () => {
         }[];
     }
 
-    const route = useRoute();
-    const { playlistId, playlistTitle }  = route.params;
-    const [playlist, setPlaylist] = useState<SpotifyShowsResponse | null>(null);
+    // const [latestMusics, setLatestMusics] = useState<any | null>(null);
 
     useEffect(() => {
-        async function getData() {
-                const newPlaylist = await getPlaylistDetail(playlistId);
-                setPlaylist(newPlaylist);
-            }
-        getData();
+    //     async function getData() {
+    //     const newLatestMusics = await getPlaylistDetail("37i9dQZF1DXe5W6diBL5N4"); // 최신은 고정
+    //     setLatestMusics(newLatestMusics);
+    // }
+
+    // getData();
+    console.log("props:", props);
     },[]);
 
-    const styles = StyleSheet.create({
-        mainBg: {
-            flex: 1,
-            backgroundColor: "white",
-        },
-        container: {
-            flex: 1,
-            margin: 10,
-        },
-        musicContainer: {
-            flex:1,
-            flexDirection: "row",
-            alignItems: "center",
-            margin: 5,
-        },
-        cover: {
-            width: 60,
-            height: 60,
-        },
-        text: {
-            flexDirection: "column",
-            marginLeft: 10,
-            alignItems: "flex-start",
+    // eslint-disable-next-line react/no-unstable-nested-components
+    function TruncateText({ text, maxLength, variant, style }) {
+        if (text.length <= maxLength) {
+        return <Text style={style} variant={variant}>{text}</Text>;
         }
-    });
 
-    
+        const truncatedText = text.slice(0, maxLength) + '...';
 
-    return (
-        <>
-            <BackTopbar title={playlistTitle}/>
-            <FlatList
-                style={styles.mainBg}
-                data={playlist?.items || []}
-                keyExtractor={(item) => item.track?.id || ''}
-                renderItem={({item}) => (
-                <View style={styles.container}>
-                    <TouchableOpacity style={styles.musicContainer}
-                    onPress={() => {
-                        console.log("aaaa");
-                    }}>
-                        <Card.Cover
-                            style={styles.cover}
-                            source={{ uri: item.track?.album?.images[0].url }}
-                        />
-                        <View style={styles.text}>
-                            <Text variant="titleMedium">{item.track?.name}</Text>
-                            <Text variant="titleSmall">{item.track?.artists[0].name}</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            )}/>
-        </>
-    );
+        return <Text style={style} variant={variant}>{truncatedText}</Text>;
+    }
+
+return (
+
+    <FlatList
+    horizontal
+    data={props?.tracks || []}
+    keyExtractor={(item) => item.tracks?.id || ''}
+    showsHorizontalScrollIndicator={false}
+    renderItem={({item}) => (
+        <View style={styles.vertical}>
+            <View>
+                <Card style={styles.card}>
+                    <Card.Cover
+                    source={{uri: item.album?.images[0].url}}
+                    style={styles.musicCard}
+                    />
+                </Card>
+                <TruncateText text={item.name} maxLength={10} variant={"bodyMedium"} style={[styles.musicTitle, styles.textShadow]} />
+                <TruncateText text={item.artists[0].name} maxLength={10} variant={"bodyMedium"} style={[styles.artist, styles.textShadow]} />
+            </View>
+        </View>
+    )}
+    />
+);
 };
 
-export default PlaylistDetail;
+const styles = StyleSheet.create({
+    vertical: {
+        flexDirection: "row",
+    },
+    cover: {
+        width: 35,
+        height: 35,
+        borderRadius: 20,
+    },
+    // 음악 관련 스타일
+    mainBg: {
+        backgroundColor: 'white',
+    },
+    textShadow: {
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: {width: 2, height: 2},
+        textShadowRadius: 10,
+    },
+    card: {
+        width: 100,
+        margin: 10,
+    },
+    musicCard: {
+        height: 100,
+        width: 100,
+    },
+    musicTitle: {
+        marginLeft: 15,
+        fontWeight: 'bold',
+    },
+    artist: {
+        marginLeft: 15,
+    },
+});
+
+export default MusicFlatList;

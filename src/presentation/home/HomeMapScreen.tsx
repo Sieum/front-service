@@ -49,7 +49,7 @@ const HomeMapScreen: React.FC<Props> = props => {
         // 지도 영역 변경 시 현재 지도 영역 업데이트
         onRegionChangeComplete={region => props.setCurrentRegion(region)}>
         {/* 지도 상에 마커 추가 클릭했을 때 showModal함수로 모달창 띄우기*/}
-        {props.markers.map((marker, index) => (
+        {props.locationPlayList.map((marker, index) => (
           <Marker
             key={index}
             coordinate={{
@@ -58,7 +58,7 @@ const HomeMapScreen: React.FC<Props> = props => {
             }}
             onPress={() => console.log('Clicked Marker')}>
             <Image
-              source={require('~images/profileimage.png')}
+              source={{uri : marker.albumImg}}
               style={styles.cover}
             />
             <Image

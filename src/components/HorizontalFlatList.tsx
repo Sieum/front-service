@@ -127,6 +127,18 @@ interface Props {
 }
 
 const HorizontalFlatList: React.FC<Props> = props => {
+
+    // eslint-disable-next-line react/no-unstable-nested-components
+    function TruncateText({ text, maxLength, variant, style }) {
+        if (text.length <= maxLength) {
+        return <Text style={style} variant={variant}>{text}</Text>;
+        }
+    
+        const truncatedText = text.slice(0, maxLength) + '...';
+    
+        return <Text style={style} variant={variant}>{truncatedText}</Text>;
+    }
+
   return (
     <FlatList
       horizontal
@@ -136,18 +148,12 @@ const HorizontalFlatList: React.FC<Props> = props => {
         <View>
           <Card style={styles.card}>
             <Card.Cover
-              source={{uri: 'https://picsum.photos/700'}}
+              source={{uri: item.albumImg}}
               style={styles.musicCard}
             />
           </Card>
-          <Text
-            variant="bodyMedium"
-            style={[styles.musicTitle, styles.textShadow]}>
-            {item.albumTitle}
-          </Text>
-          <Text variant="bodyMedium" style={[styles.artist, styles.textShadow]}>
-            {item.albumArtistName}
-          </Text>
+          <TruncateText text={item.albumTitle} maxLength={10} variant={"bodyMedium"} style={[styles.musicTitle, styles.textShadow]} />
+          <TruncateText text={item.albumArtistName} maxLength={10} variant={"bodyMedium"} style={[styles.artist, styles.textShadow]} />
         </View>
       )}
     />

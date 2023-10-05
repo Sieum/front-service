@@ -23,7 +23,7 @@ interface Props {
   locationPlayList: MyLocationCurrentPlayingMusicList[];
 }
 
-const HomeMusicScreen: React.FC = () => {
+const HomeMusicScreen: React.FC<Props> = props => {
 
   // eslint-disable-next-line react/no-unstable-nested-components
   const ModalComponent = () => {
@@ -144,7 +144,8 @@ const HomeMusicScreen: React.FC = () => {
       previous?: string | null;
       total?: number;
   }
-    const [searchQuery, setSearchQuery] = useState("");
+  
+  const [searchQuery, setSearchQuery] = useState("");
     const onChangeSearch = (query : string) => setSearchQuery(query);
     const [searchData, setSearchData] = useState<SpotifySearchResponse | null>(null);
   
@@ -194,7 +195,6 @@ const HomeMusicScreen: React.FC = () => {
                                       iconColor="white"
                                       onPress={async () => {
                                         setSelectedMusic(item.id);
-                                        console.log("온프레스");
                                         hideModal();
                                       }}
                                   />
@@ -209,6 +209,44 @@ const HomeMusicScreen: React.FC = () => {
       </KeyboardAvoidingView>
   );
   };
+
+  const styles = StyleSheet.create({
+    reBtn: {
+      flex: 1,
+      justifyContent:"flex-end",
+    },
+    horizontal: {
+      flex: 1,
+      flexDirection: "row",
+      alignContent: "center",
+      alignItems: "center",
+    },
+    plusBtn: {
+      // justifyContent: "center",
+      // alignItems: "center",
+      // alignSelf: "center",
+    },
+    content: {
+      // flex: 1,
+      // justifyContent: "center",
+      alignItems: "center",
+      textAlign: "center",
+      // alignItems: "center",
+    },
+    selectBox: {
+      alignSelf: "center",
+      width: Dimensions.get("window").width * 0.9,
+      height: 150,
+      backgroundColor: "#FCD34D",
+    },
+    listTitle: {
+      margin: 10,
+      fontWeight: 'bold',
+      textShadowColor: 'rgba(0, 0, 0, 0.75)',
+      textShadowOffset: {width: 2, height: 2},
+      textShadowRadius: 10,
+    },
+  });
 
   const [visible, setVisible] = useState(false);
   const [recommendMusics, setRecommendMusics] = useState<any | null>(null);
@@ -272,64 +310,15 @@ const HomeMusicScreen: React.FC = () => {
         최신 음악
       </Text>
       <TwolineFlatList />
-      <Text variant="headlineLarge" style={styles.listTitle}>
-        오늘의 추천 음악
-      </Text>
-
-      <HorizontalFlatList locationPlayList={props.locationPlayList} />
 
       <Text variant="headlineLarge" style={styles.listTitle}>
         내 근처 인기 음악
       </Text>
-
       <HorizontalFlatList locationPlayList={props.locationPlayList} />
 
-      <Text variant="headlineLarge" style={styles.listTitle}>
-        랜덤 추천 음악
-      </Text>
-
-      <HorizontalFlatList locationPlayList={props.locationPlayList} />
 
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  reBtn: {
-    flex: 1,
-    justifyContent:"flex-end",
-  },
-  horizontal: {
-    flex: 1,
-    flexDirection: "row",
-    alignContent: "center",
-    alignItems: "center",
-  },
-  plusBtn: {
-    // justifyContent: "center",
-    // alignItems: "center",
-    // alignSelf: "center",
-  },
-  content: {
-    // flex: 1,
-    // justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    // alignItems: "center",
-  },
-  selectBox: {
-    alignSelf: "center",
-    width: Dimensions.get("window").width * 0.9,
-    height: 150,
-    backgroundColor: "#FCD34D",
-  },
-  listTitle: {
-    margin: 10,
-    fontWeight: 'bold',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: {width: 2, height: 2},
-    textShadowRadius: 10,
-  },
-});
 
 export default HomeMusicScreen;

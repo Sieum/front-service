@@ -8,7 +8,7 @@ export async function getRecommend(seedTracks: string) {
     const response = await api.get(`recommendations?seed_tracks=${seedTracks}`);
     return response.data;
   } catch (error) {
-    console.error('추천 리스트를 가져오지 못했습니다 :', error);
+    // console.error('추천 리스트를 가져오지 못했습니다 :', error);
     throw error;
   }
 }
@@ -19,7 +19,7 @@ export async function getPlaylistDetail(playlistId: string) {
     const response = await api.get(`/playlists/${playlistId}/tracks`);
     return response.data;
   } catch (error) {
-    console.error('플레이리스트 상세를 가져오지 못했습니다 :', error);
+    // console.error('플레이리스트 상세를 가져오지 못했습니다 :', error);
     throw error;
   }
 }
@@ -30,7 +30,7 @@ export async function getMyPlaylists(userId: string) {
     const response = await api.get(`/users/${userId}/playlists`);
     return response.data;
   } catch (error) {
-    console.error('나의 플레이리스트를 가져오지 못했습니다 :', error);
+    // console.error('나의 플레이리스트를 가져오지 못했습니다 :', error);
     throw error;
   }
 }
@@ -41,7 +41,7 @@ export async function getAllPlaylists() {
     const response = await api.get(`/me/playlists`);
     return response.data;
   } catch (error) {
-    console.error('나의 전체 플레이리스트를 가져오지 못했습니다 :', error);
+    // console.error('나의 전체 플레이리스트를 가져오지 못했습니다 :', error);
     throw error;
   }
 }
@@ -52,7 +52,7 @@ export async function getPlaylists(playlistId: string) {
     const response = await api.get(`/playlists/${playlistId}`);
     return response.data;
   } catch (error) {
-    console.error('플레이리스트를 가져오지 못했습니다 :', error);
+    // console.error('플레이리스트를 가져오지 못했습니다 :', error);
     throw error;
   }
 }
@@ -63,7 +63,7 @@ export async function searchItemByArtist(quary: string) {
     const response = await api.get(`/search?q=${quary}&type=artist`);
     return response.data;
   } catch (error) {
-    console.error('가수명 조회를 하지 못했습니다 :', error);
+    // console.error('가수명 조회를 하지 못했습니다 :', error);
     throw error;
   }
 }
@@ -74,7 +74,7 @@ async function searchItemByTrack(quary: string) {
     const response = await api.get(`/search?q=${quary}&type=track`);
     return response.data;
   } catch (error) {
-    console.error('곡명 조회를 하지 못했습니다 :', error);
+    // console.error('곡명 조회를 하지 못했습니다 :', error);
     throw error;
   }
 }
@@ -85,7 +85,7 @@ export async function getProfiileImage(userId: string) {
     const response = await api.get(`/users/${userId}`);
     return response.data;
   } catch (error) {
-    console.error('프로필 이미지를 가져오지 못했습니다 :', error);
+    // console.error('프로필 이미지를 가져오지 못했습니다 :', error);
     throw error;
   }
 }

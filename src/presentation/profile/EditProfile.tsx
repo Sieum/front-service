@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList, Keyboard, KeyboardAvoidingView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Avatar, Button, Card, Chip, Dialog, IconButton, Modal, PaperProvider, Portal, Searchbar, Snackbar, Text, TextInput } from 'react-native-paper';
 import TextTicker from 'react-native-text-ticker';
+import { searchItemByArtist, searchItemByTrack, getAccessToken } from '~apis/spotifyApi';
 import BackTopbar from '~components/BackTopBar';
 
 const EditProfile: React.FC = () => {
@@ -158,20 +159,92 @@ const EditProfile: React.FC = () => {
 
     // eslint-disable-next-line react/no-unstable-nested-components
     const ModalComponent = () => {
+        interface SpotifySearchResponse {
+            tracks?: {
+            href?: string;
+            items?: {
+                album?: {
+                album_type?: string;
+                artists?: {
+                    external_urls?: {
+                    spotify?: string;
+                    };
+                    href?: string;
+                    id?: string;
+                    name?: string;
+                    type?: string;
+                    uri?: string;
+                }[];
+                external_urls?: {
+                    spotify?: string;
+                };
+                href?: string;
+                id?: string;
+                images?: {
+                    height?: number;
+                    url?: string;
+                    width?: number;
+                }[];
+                is_playable?: boolean;
+                name?: string;
+                release_date?: string;
+                release_date_precision?: string;
+                total_tracks?: number;
+                type?: string;
+                uri?: string;
+                };
+                artists?: {
+                external_urls?: {
+                    spotify?: string;
+                };
+                href?: string;
+                id?: string;
+                name?: string;
+                type?: string;
+                uri?: string;
+                }[];
+                disc_number?: number;
+                duration_ms?: number;
+                explicit?: boolean;
+                external_ids?: {
+                isrc?: string;
+                };
+                external_urls?: {
+                spotify?: string;
+                };
+                href?: string;
+                id?: string;
+                is_local?: boolean;
+                is_playable?: boolean;
+                name?: string;
+                popularity?: number;
+                preview_url?: string | null;
+                track_number?: number;
+                type?: string;
+                uri?: string;
+            }[];
+            };
+            limit?: number;
+            next?: string | null;
+            offset?: number;
+            previous?: string | null;
+            total?: number;
+        }
+
         const [nickname, setNickname] = useState("원래닉네임");
         const [searchQuery, setSearchQuery] = useState("");
         const onChangeSearch = (query : string) => setSearchQuery(query);
         const [chipData, setChipData] = useState(AllGenre);
         const [count, setCount] = useState(0);
+        const [searchData, setSearchData] = useState<SpotifySearchResponse | null>(null);
 
         const [snackbarVisible, setSnackBarVisible] = useState(false);
         const onToggleSnackBar = () => setSnackBarVisible(true);
         const onDismissSnackBar = () => setSnackBarVisible(false);
 
         useEffect(() => {
-            console.log(count + "개 선택");
-        }, [count]);
-
+            console.log(searchData);
+        }, [count, searchData]);
 
         const handleChipClick = (chipId) => {
             const updatedData = [...chipData];
@@ -204,87 +277,6 @@ const EditProfile: React.FC = () => {
             });
             setCount(selectedCount);
         };
-
-        const musicData = [
-        {
-            id: '1',
-            musicTitle: '민들레',
-            artist: '우효',
-            image: require('src/static/images/cover.png'),
-        },
-        {
-            id: '2',
-            musicTitle: '민들레22222222222',
-            artist: '우효',
-            image: require('src/static/images/cover.png'),
-        },
-        {
-            id: '3',
-            musicTitle: '민들레',
-            artist: '우효',
-            image: require('src/static/images/cover.png'),
-        },
-        {
-            id: '4',
-            musicTitle: '민들레',
-            artist: '우효',
-            image: require('src/static/images/cover.png'),
-        },
-        {
-            id: '5',
-            musicTitle: '민들레',
-            artist: '우효',
-            image: require('src/static/images/cover.png'),
-        },
-        {
-            id: '6',
-            musicTitle: '민들레',
-            artist: '우효',
-            image: require('src/static/images/cover.png'),
-        },
-        {
-            id: '7',
-            musicTitle: '민들레',
-            artist: '우효',
-            image: require('src/static/images/cover.png'),
-        },
-        {
-            id: '8',
-            musicTitle: '민들레',
-            artist: '우효',
-            image: require('src/static/images/cover.png'),
-        },
-        {
-            id: '9',
-            musicTitle: '민들레',
-            artist: '우효',
-            image: require('src/static/images/cover.png'),
-        },
-        {
-            id: '10',
-            musicTitle: '민들레',
-            artist: '우효',
-            image: require('src/static/images/cover.png'),
-        },
-        {
-            id: '11',
-            musicTitle: '민들레',
-            artist: '우효',
-            image: require('src/static/images/cover.png'),
-        },
-        {
-            id: '12',
-            musicTitle: '민들레',
-            artist: '우효',
-            image: require('src/static/images/cover.png'),
-        },
-        {
-            id: '13',
-            musicTitle: '민들레',
-            artist: '우효',
-            image: require('src/static/images/cover.png'),
-        },
-        ];
 
         const styles = StyleSheet.create({
             modal: {
@@ -418,28 +410,31 @@ const EditProfile: React.FC = () => {
                             iconColor="#FCD34D"
                             onChangeText={onChangeSearch}
                             value={searchQuery}
-                            onIconPress={() => {
-                                console.log("asdasd");
+                            onIconPress={async () => {
+                                const newData :SpotifySearchResponse =  await searchItemByTrack(searchQuery);
+                                setSearchData(newData);
                                 Keyboard.dismiss();
                             }}
-                            onSubmitEditing={() => {
-                                console.log("qqqqq");
+                            onSubmitEditing={async () => {
+                                const newData :SpotifySearchResponse =  await searchItemByTrack(searchQuery);
+                                setSearchData(newData);
                             }}
                     />
-                    {musicData.length !== 0 ? (
+                    {searchData !== null ? (
                         <FlatList
                             showsVerticalScrollIndicator={false}
-                            data={musicData}
+                            data={searchData.tracks?.items || []}
+                            keyExtractor={(item) => item.id || ''}
                             renderItem={({item}) => (
                                 <>
                                     <View style={styles.searchItemBox}>
                                         <Card.Cover
-                                            source={item.image}
+                                            source={{uri: item.album?.images[0].url }}
                                             style={styles.searchItemCover}
                                         />
                                         <View style={styles.searchItemText}>
-                                            <Text variant="titleMedium">{item.musicTitle}</Text>
-                                            <Text variant="titleSmall">{item.artist}</Text>
+                                            <Text variant="titleMedium">{item.name}</Text>
+                                            <Text variant="titleSmall">{item.artists[0].name}</Text>
                                         </View>
                                         <View style={styles.addBtnBox}>
                                             <IconButton

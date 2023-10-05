@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, FlatList, Image, StyleSheet, Dimensions } from 'react-native';
 import { Card, FAB, IconButton, Text } from 'react-native-paper';
+import { getPlaylists } from '~apis/spotifyApi';
 import Topbar from '~components/Topbar';
 
 // 게시물 아이템의 타입 정의
@@ -142,24 +143,27 @@ const PostComponent = ({item}: {item: PostItem}) => {
 const CommunityContainer: React.FC = () => {
 
   return (
-    <View style={styles.mainBg}>
-      <Topbar title={"커뮤니티"} />
-      <View>
-        <FlatList
-          data={postData}
-          keyExtractor={item => item.id}
-          renderItem={PostComponent}
+    <>
+      <View style={styles.mainBg}>
+        <Topbar title={"커뮤니티"} />
+        <View>
+          <FlatList
+            data={postData}
+            keyExtractor={item => item.id}
+            renderItem={PostComponent}
+          />
+        </View>
+        <FAB
+          icon="plus"
+          color="white"
+          style={styles.fab}
+          onPress={() => {
+            // 게시글 작성 창 이동
+            getPlaylists("2VEFuKDw66J5xYAxDDFu7q");
+          }}
         />
       </View>
-      <FAB
-        icon="plus"
-        color="white"
-        style={styles.fab}
-        onPress={() => {
-          // 게시글 작성 창 이동
-        }}
-      />
-    </View>
+    </>
   );
 };
 

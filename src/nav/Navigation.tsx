@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import NavigationTabBar from '~nav/NavigationTabBar';
 import Stack from '~nav/Stack';
+import PlaylistDetail from '~presentation/playList/PlayListDetail';
 
 import RNSecureStorage from 'rn-secure-storage';
 import OAuthCallbackHandler from '../container/OAuthCallbackHandler';
@@ -38,6 +39,7 @@ const Navigation = () => {
         <>
           <Nav.Screen name="NavigationTabBar" component={NavigationTabBar} />
           <Nav.Screen name="Stack" component={Stack} />
+          <Nav.Screen name="PlaylistDetail" component={PlaylistDetail} />
         </>
       ) : (
         <>

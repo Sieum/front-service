@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Divider, Appbar} from 'react-native-paper';
@@ -25,10 +26,14 @@ const BackTopbar: React.FC<BackTopBarProps> = ({
         },
     });
 
+    const navigation = useNavigation();
+
     return (
         <>
         <Appbar.Header style={topbarStyle.topbar}>
-            <Appbar.BackAction />
+            <Appbar.BackAction onPress={() => {
+                navigation.goBack();
+            }}/>
             <Appbar.Content title={title} style={topbarStyle.title}/>
             {
                 iconName !== undefined ?

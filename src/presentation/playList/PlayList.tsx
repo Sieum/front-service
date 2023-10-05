@@ -1,8 +1,9 @@
-import React, {useState} from "react";
-import { ScrollView, View, StyleSheet, FlatList } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import React, {useEffect, useState} from "react";
+import { View, StyleSheet, FlatList, TouchableOpacity, } from "react-native";
 import { Text, Appbar, Divider, Card, IconButton } from "react-native-paper";
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import { getAllPlaylists, getMyPlaylists } from "~apis/spotifyApi";
 
 const Topbar = ({title}) => {
     const topbarStyle = StyleSheet.create({
@@ -27,27 +28,80 @@ const Topbar = ({title}) => {
     );
 };
 
-const ListBox = ({category}) => {
-    const data = [
-        { title: '플리제목1' , total: 10, heart: 151 },
-        { title: '플리제목2' , total: 10, heart: 151 },
-        { title: '플리제목3' , total: 10, heart: 151 },
-        { title: '플리제목4' , total: 10, heart: 151 },
-        { title: '플리제목5' , total: 10, heart: 151 },
-        { title: '플리제목6' , total: 10, heart: 151 },
+const ListBox = ({subTitle, type}) => {
+    interface myPlaylistResponse {
+        href?: string;
+        limit?: number;
+        next?: string | null;
+        offset?: number;
+        previous?: string | null;
+        total?: number;
+        items?: {
+            collaborative?: boolean;
+            description?: string;
+            external_urls?: {
+            spotify?: string;
+            };
+            href?: string;
+            id?: string;
+            images?: {
+            url?: string;
+            height?: number;
+            width?: number;
+            }[];
+            name?: string;
+            owner?: {
+            external_urls?: {
+                spotify?: string;
+            };
+            followers?: {
+                href?: string;
+                total?: number;
+            };
+            href?: string;
+            id?: string;
+            type?: string;
+            uri?: string;
+            display_name?: string;
+            };
+            public?: boolean;
+            snapshot_id?: string;
+            tracks?: {
+            href?: string;
+            total?: number;
+            };
+            type?: string;
+            uri?: string;
+        }[];
+    }
 
-    ];
+    const [like, setLike] = useState(true);
+    const [myPlaylist, setMyPlaylist] = useState<myPlaylistResponse | null>(null);
+    const [allPlaylist, setallPlaylist] = useState<myPlaylistResponse | null>(null);
+
+    useEffect(() => {
+        async function getData() {
+            if (type === "my") {
+                const newMyPlaylist : myPlaylistResponse = await getMyPlaylists("31wc22qzbwcuzdqxw24ahhuedtxe");
+                setMyPlaylist(newMyPlaylist);
+            } else {
+                const newAllPlaylist : myPlaylistResponse = await getAllPlaylists();
+                setallPlaylist(newAllPlaylist);
+            }
+        }
+        getData();
+    },[]);
 
     const ListBoxStyle = StyleSheet.create({
         listBox: {
-            flex: 1,
+            // flex: 1,
             margin: 10,
         },
         box: {
             flex:1 ,
             flexDirection: "row",
             alignItems: "center",
-            margin: 10,
+            margin: 5,
         },
         category: {
             fontWeight: "bold",
@@ -66,27 +120,32 @@ const ListBox = ({category}) => {
         },
     });
 
-    const [like, setLike] = useState(true);
+    const navigation = useNavigation();
 
     return (
         <View style={ListBoxStyle.listBox}>
             <Text variant="titleMedium"
                 style={ListBoxStyle.category}>
-                    {category}
+                    {subTitle}
             </Text>
             <FlatList
-                data={data}
+                data={type === "my" ? myPlaylist?.items || [] : allPlaylist?.items || []}
+                keyExtractor={(item) => item.name || ''}
                 renderItem={({item}) => (
                 <View style={ListBoxStyle.box}>
-                    <Card.Cover
-                        source={{ uri: 'https://picsum.photos/700' }}
-                        style={ListBoxStyle.cover} />
-                    <View>
-                        <Text variant="titleMedium" style={ListBoxStyle.listText}>{item.title}</Text>
-                        <Text variant="titleSmall" style={ListBoxStyle.listText}>
-                            총 {item.total}곡 | {<Icon name="heart" size={15} color="#FCD34D" />}{item.heart}개
-                        </Text>
-                    </View>
+                    <TouchableOpacity style={ListBoxStyle.box} onPress={() => {
+                        navigation.navigate("PlaylistDetail", {playlistId : item.id , playlistTitle : item.name});
+                    }}>
+                        <Card.Cover
+                            source={{ uri: item.images[0].url }}
+                            style={ListBoxStyle.cover} />
+                        <View>
+                            <Text variant="titleMedium" style={ListBoxStyle.listText}>{item.name}</Text>
+                            <Text variant="titleSmall" style={ListBoxStyle.listText}>
+                                총 {item.tracks?.total}곡 | {<Icon name="heart" size={15} color="#FCD34D" />}{item.owner?.followers?.total} 개
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
                     <View style={ListBoxStyle.likeBtn}>
                         {like ? // 좋아요 여부에 따라 하트색 변경 -> 나의 플레이스트라면 좋아요 해제 하는 순간 화면에서 사라지게 하면 될듯
                             <IconButton
@@ -116,17 +175,18 @@ const ListBox = ({category}) => {
 const Playlist = () => {
     const mainStyle = StyleSheet.create({
         background: {
+            // flex: 1,
             backgroundColor: "white",
         },
     });
 
     return (
-        <ScrollView style={mainStyle.background}>
+        <View style={mainStyle.background}>
             <Topbar title={"플레이리스트"}/>
-            <ListBox category={"{NickName}님의 플레이리스트"}/>
+            <ListBox subTitle={"{NickName}님의 플레이리스트"} type={"my"}/>
             <Divider />
-            <ListBox category={"{NickName}님이 좋아요 한 플레이리스트"} />
-        </ScrollView>
+            <ListBox subTitle={"{NickName}님이 좋아요 한 플레이리스트"} type={"all"}/>
+        </View>
     );
 };
 

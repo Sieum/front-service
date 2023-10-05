@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, ImageSourcePropType, Dimensions} from 'react-native';
-import { Avatar, Button, Text } from 'react-native-paper';
+import {View, StyleSheet, ImageSourcePropType, Dimensions} from 'react-native';
+import {Avatar, Button, Text} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 
 interface UserProfileProps {
   profileimage: ImageSourcePropType; // 프로필 이미지 소스 타입
@@ -15,14 +16,23 @@ const UserProfile: React.FC<UserProfileProps> = ({
   friendNum,
   playlistNum,
 }) => {
+  const {width} = Dimensions.get('window');
 
-  const { width } = Dimensions.get('window');
+  const navigation = useNavigation(); // navigation 객체 가져오기
+
+  const goToEditProfile = () => {
+    navigation.navigate('EditProfile'); // EditProfile 페이지로 이동
+  };
 
   return (
     <>
       <View style={styles.profileTop}>
         <View style={styles.imageArea}>
-          <Avatar.Image size={width * 0.25} source={profileimage} style={styles.profileImage} />
+          <Avatar.Image
+            size={width * 0.25}
+            source={profileimage}
+            style={styles.profileImage}
+          />
         </View>
 
         <View style={styles.textArea}>
@@ -58,10 +68,18 @@ const UserProfile: React.FC<UserProfileProps> = ({
       </View>
 
       <View style={styles.profileMiddle}>
-        <Text variant="titleMedium" style={styles.nickname}>닉네임</Text>
+        <Text variant="titleMedium" style={styles.nickname}>
+          닉네임
+        </Text>
         <View style={styles.btnArea}>
-          <Button mode="contained-tonal" buttonColor="#FCD34D" style={styles.btn}>
-            <Text variant="titleMedium" style={styles.btnText}>프로필 수정</Text>
+          <Button
+            mode="contained-tonal"
+            buttonColor="#FCD34D"
+            style={styles.btn}
+            onPress={goToEditProfile}>
+            <Text variant="titleMedium" style={styles.btnText}>
+              프로필 수정
+            </Text>
           </Button>
         </View>
       </View>
@@ -69,28 +87,28 @@ const UserProfile: React.FC<UserProfileProps> = ({
   );
 };
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   profileTop: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   profileMiddle: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   textArea: {
     width: width * 0.7,
   },
   textContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   profileText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   profileTitleText: {
-    textAlign: "center",
+    textAlign: 'center',
     marginBottom: 10,
   },
   textBox: {
@@ -98,29 +116,29 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   imageArea: {
-    alignContent: "flex-start",
-    flexDirection: "column",
-    alignItems: "center",
+    alignContent: 'flex-start',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   profileImage: {
     margin: 15,
   },
   nickname: {
     width: width * 0.25,
-    textAlign: "center",
+    textAlign: 'center',
     margin: 15,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   btnArea: {
     width: width * 0.7,
-    alignItems: "center",
+    alignItems: 'center',
   },
   btn: {
     width: width * 0.6,
     marginHorizontal: 15,
   },
   btnText: {
-    color: "white",
+    color: 'white',
   },
   //////
   // container: {

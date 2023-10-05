@@ -2,6 +2,9 @@ import React from 'react';
 import {View, StyleSheet, ImageSourcePropType, Dimensions} from 'react-native';
 import {Avatar, Button, Text} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
+import {useRecoilValue} from 'recoil'; // Recoil에서 useRecoilValue import
+
+import {myProfileInfoAtom} from '~recoil/MemberAtom'; // MyProfile Atom을 import
 
 interface UserProfileProps {
   profileimage: ImageSourcePropType; // 프로필 이미지 소스 타입
@@ -24,6 +27,12 @@ const UserProfile: React.FC<UserProfileProps> = ({
     navigation.navigate('EditProfile'); // EditProfile 페이지로 이동
   };
 
+  // Recoil에서 nickname 상태 가져오기
+  const myProfile = useRecoilValue(myProfileInfoAtom);
+
+  const nickname = myProfile.nickname;
+
+  // console.log('프로필 이미지:', profileimage);
   return (
     <>
       <View style={styles.profileTop}>
@@ -69,7 +78,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
       <View style={styles.profileMiddle}>
         <Text variant="titleMedium" style={styles.nickname}>
-          닉네임
+          {nickname}
         </Text>
         <View style={styles.btnArea}>
           <Button

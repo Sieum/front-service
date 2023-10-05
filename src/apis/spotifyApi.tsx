@@ -68,4 +68,15 @@ async function searchItemByTrack(quary: string) {
   }
 }
 
+// 유저의 프로필이미지 가져오기
+export async function getProfiileImage(userId: string) {
+  try {
+    const response = await api.get(`/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('프로필 이미지를 가져오지 못했습니다 :', error);
+    throw error;
+  }
+}
+
 export {searchItemByTrack};

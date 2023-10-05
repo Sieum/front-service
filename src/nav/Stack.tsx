@@ -1,7 +1,7 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import OAuthCallbackHandler from '~components/OAuthCallbackHandler';
-import LoginWebView from '../presentation/start/LoginWebView';
+import LoginWebView from '~presentation/login/LoginWebView';
 import LoginContainer from '../container/login/LoginContainer';
 
 const NativeStack = createNativeStackNavigator();

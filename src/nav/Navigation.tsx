@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import NavigationTabBar from '~nav/NavigationTabBar';
 import Stack from '~nav/Stack';
-
-import RNSecureStorage from 'rn-secure-storage';
 import OAuthCallbackHandler from '../components/OAuthCallbackHandler';
-import LoginWebView from '../presentation/start/LoginWebView';
+import LoginWebView from '~presentation/login/LoginWebView';
 import LoginContainer from '../container/login/LoginContainer';
+import SetMyLocationContainer from '~container/location/SetMyLocationContainer';
+import RNSecureStorage from 'rn-secure-storage';
 import {useRecoilState} from 'recoil';
 import {AccessTokenAtom} from '~recoil/TokenAtom';
 import EditProfile from '~presentation/profile/EditProfile';
@@ -39,6 +39,10 @@ const Navigation = () => {
       }}>
       {userToken ? (
         <>
+          <Nav.Screen
+            name="SetMyLocationContainer"
+            component={SetMyLocationContainer}
+          />
           <Nav.Screen name="NavigationTabBar" component={NavigationTabBar} />
           <Nav.Screen name="Stack" component={Stack} />
           {/* EditProfile 스크린 추가 */}

@@ -1,7 +1,7 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Divider, Appbar} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
 
 interface BackTopBarProps {
   title: string;

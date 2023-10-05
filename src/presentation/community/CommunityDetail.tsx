@@ -1,17 +1,9 @@
 import React from 'react';
-import {
-  View,
-  FlatList,
-  Image,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
-import {Card, FAB, IconButton, Text} from 'react-native-paper';
-import Topbar from '~components/Topbar';
-import {useNavigation} from '@react-navigation/native';
+import {View, Image, StyleSheet, Dimensions} from 'react-native';
+import {Card, IconButton, Text} from 'react-native-paper';
+import BackTopbar from '~components/BackTopBar';
+import {useRoute} from '@react-navigation/native';
 
-// 게시물 아이템의 타입 정의
 interface PostItem {
   id: string;
   username: string;
@@ -170,37 +162,17 @@ const PostComponent = ({item}: {item: PostItem}) => {
   );
 };
 
-const CommunityContainer: React.FC = () => {
-  const navigation = useNavigation(); // navigation 객체 가져오기
+const CommunityDetail: React.FC = () => {
+  const route = useRoute();
+  const {postId} = route.params;
 
-  const goToCommunityDetail = (postId: string) => {
-    navigation.navigate('CommunityDetail', {postId}); // CommunityDetail 페이지로 이동
-  };
-
-  const goToCommunityCreate = () => {
-    navigation.navigate('CommunityCreate'); // CommunityCreate 페이지로 이동
-  };
+  // postId에 해당하는 게시물 찾기
+  const selectedPost = postData.find(post => post.id === postId);
 
   return (
     <View style={styles.mainBg}>
-      <Topbar title={'커뮤니티'} />
-      <View>
-        <FlatList
-          data={postData}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <TouchableOpacity onPress={() => goToCommunityDetail(item.id)}>
-              <PostComponent item={item} />
-            </TouchableOpacity>
-          )}
-        />
-      </View>
-      <FAB
-        icon="plus"
-        color="white"
-        style={styles.fab}
-        onPress={() => goToCommunityCreate()}
-      />
+      <BackTopbar title={'게시글 상세'} />
+      <View>{selectedPost && <PostComponent item={selectedPost} />}</View>
     </View>
   );
 };
@@ -209,13 +181,6 @@ const styles = StyleSheet.create({
   mainBg: {
     backgroundColor: 'white',
   },
-  fab: {
-    position: 'absolute',
-    margin: 20,
-    right: 0,
-    bottom: 70,
-    backgroundColor: '#FCD34D',
-  },
 });
 
-export default CommunityContainer;
+export default CommunityDetail;

@@ -1,12 +1,13 @@
-import React from "react";
-import { View, Text} from "react-native";
+import React from 'react';
+import {View} from 'react-native';
+import Follow from './Follow';
 
 const Home = () => {
-    return(
-        <View>
-            <Text>FriendList</Text>
-        </View>
-    )
-}
+  return (
+    <View>
+      <Follow />
+    </View>
+  );
+};
 
 export default Home;

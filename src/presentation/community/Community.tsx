@@ -1,13 +1,7 @@
 import React from 'react';
-import {
-  View,
-  FlatList,
-  Image,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
-import {Card, FAB, IconButton, Text} from 'react-native-paper';
+import { View, FlatList, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { Card, FAB, IconButton, Text } from 'react-native-paper';
+import { getPlaylists } from '~apis/spotifyApi';
 import Topbar from '~components/Topbar';
 import {useNavigation} from '@react-navigation/native';
 
